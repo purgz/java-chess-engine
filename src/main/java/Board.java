@@ -119,26 +119,8 @@ public class Board {
         if (targetSquare.equals("-")){
             enPassantTargetSquare = -1;
         } else {
-            enPassantTargetSquare = convertSquarePosToBoardIndex(targetSquare);
+            enPassantTargetSquare = Util.convertSquarePosToBoardIndex(targetSquare);
         }
-    }
-
-    //converts a chess position such as e1 to the correct board index
-    private int convertSquarePosToBoardIndex(String square){
-
-        char fileChar = square.charAt(0);
-        char rankChar = square.charAt(1);
-
-        // - 'a' will give correct rank corresponding to the letter a - g
-        int file = fileChar - 'a';
-
-        //- '0' will give the digit char as an int
-        // 8 - num as the board works from top to bottom
-        int rank = 8 - (rankChar - '0');
-
-        int boardIndex = (rank * 8) + file;
-
-        return boardIndex;
     }
 
     private void setCastlingRights(String castlingRights) {
@@ -204,5 +186,6 @@ public class Board {
         Board board = new Board(enPassantFen);
         //board.createGameBoard(enPassantFen);
         System.out.println(board);
+
     }
 }
