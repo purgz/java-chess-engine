@@ -6,7 +6,7 @@ public class Board {
     private static final String testFen = "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2 ";
     private static final String enPassantFen = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq c6 0 1";
 
-    //want to convert any fen position into board representation
+    private String boardStartingFen;
 
     private final char[] squares = new char[64];
 
@@ -19,6 +19,76 @@ public class Board {
 
     //need to check fen for en passant target square
     private int enPassantTargetSquare;
+
+    //no args constructor if wanting to manually call the methods to set board
+    public Board(){};
+
+    public String getBoardStartingFen() {
+        return boardStartingFen;
+    }
+
+    public void setBoardStartingFen(String boardStartingFen) {
+        this.boardStartingFen = boardStartingFen;
+    }
+
+    public char[] getSquares() {
+        return squares;
+    }
+
+    public char getSideToMove() {
+        return sideToMove;
+    }
+
+    public void setSideToMove(char sideToMove) {
+        this.sideToMove = sideToMove;
+    }
+
+    public boolean isWhiteKingCastle() {
+        return whiteKingCastle;
+    }
+
+    public void setWhiteKingCastle(boolean whiteKingCastle) {
+        this.whiteKingCastle = whiteKingCastle;
+    }
+
+    public boolean isWhiteQueenCastle() {
+        return whiteQueenCastle;
+    }
+
+    public void setWhiteQueenCastle(boolean whiteQueenCastle) {
+        this.whiteQueenCastle = whiteQueenCastle;
+    }
+
+    public boolean isBlackKingCastle() {
+        return blackKingCastle;
+    }
+
+    public void setBlackKingCastle(boolean blackKingCastle) {
+        this.blackKingCastle = blackKingCastle;
+    }
+
+    public boolean isBlackQueenCastle() {
+        return blackQueenCastle;
+    }
+
+    public void setBlackQueenCastle(boolean blackQueenCastle) {
+        this.blackQueenCastle = blackQueenCastle;
+    }
+
+    public int getEnPassantTargetSquare() {
+        return enPassantTargetSquare;
+    }
+
+    public void setEnPassantTargetSquare(int enPassantTargetSquare) {
+        this.enPassantTargetSquare = enPassantTargetSquare;
+    }
+
+    //can be used to initialize a board with a given fen
+    public Board(String fen) {
+
+        this.boardStartingFen = fen;
+        createGameBoard(fen);
+    }
 
     private void createGameBoard(String fen){
 
@@ -33,12 +103,14 @@ public class Board {
     @Override
     public String toString() {
         return "Board{" +
-                "squares=" + Arrays.toString(squares) +
+                "boardStartingFen='" + boardStartingFen + '\'' +
+                ", squares=" + Arrays.toString(squares) +
                 ", sideToMove=" + sideToMove +
                 ", whiteKingCastle=" + whiteKingCastle +
                 ", whiteQueenCastle=" + whiteQueenCastle +
                 ", blackKingCastle=" + blackKingCastle +
                 ", blackQueenCastle=" + blackQueenCastle +
+                ", enPassantTargetSquare=" + enPassantTargetSquare +
                 '}';
     }
 
@@ -129,8 +201,8 @@ public class Board {
     public static void main(String[] args) {
 
 
-        Board board = new Board();
-        board.createGameBoard(enPassantFen);
+        Board board = new Board(enPassantFen);
+        //board.createGameBoard(enPassantFen);
         System.out.println(board);
     }
 }
