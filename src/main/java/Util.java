@@ -46,7 +46,7 @@ public class Util {
         return arrayContains(bFile, boardIndex);
     }
 
-    private static boolean arrayContains(int[] arr, int value){
+    public static boolean arrayContains(int[] arr, int value){
 
         for (int num : arr){
             if (num == value){
