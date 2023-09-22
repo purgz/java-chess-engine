@@ -68,8 +68,20 @@ public class Moves {
                 int endSquare = knightSquare + moveOption;
 
                 if (endSquare < 64 && endSquare > -1){
-                    int[] move = {knightSquare, endSquare};
-                    allKnightPseudoLegalMoves.add(move);
+
+                    //if white then if lower case or empty push move
+                    if (colourToCalculate == 'w'){
+                        if (!Character.isUpperCase(board.getSquares()[endSquare]) || board.getSquares()[endSquare] == 0){
+                            int[] move = {knightSquare, endSquare};
+                            allKnightPseudoLegalMoves.add(move);
+                        }
+                    } else {
+                        //if black then cant push onto lower case as these are blacks own pieces
+                        if (!Character.isLowerCase(board.getSquares()[endSquare]) || board.getSquares()[endSquare] == 0){
+                            int[] move = {knightSquare, endSquare};
+                            allKnightPseudoLegalMoves.add(move);
+                        }
+                    }
                     //System.out.println(Arrays.toString(move));
                 }
 
