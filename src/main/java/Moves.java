@@ -39,9 +39,6 @@ public class Moves {
             }
         }
 
-        //System.out.println(knightSquares);
-
-        //calculate knight moves
         for (Integer knightSquare : knightSquares){
 
             int[] knightMoveOptions;
@@ -59,30 +56,17 @@ public class Moves {
                 knightMoveOptions = KNIGHT_MOVE_VALUES;
             }
 
-            //System.out.println(Arrays.toString(knightMoveOptions));
-            //calculate all the moves for each possibility - check for same colour pieces as can't move to these squares
-
-
             for (int moveOption : knightMoveOptions){
 
                 int endSquare = knightSquare + moveOption;
 
                 if (endSquare < 64 && endSquare > -1){
 
-                    //if white then if lower case or empty push move
-                    if (colourToCalculate == 'w'){
-                        if (!Character.isUpperCase(board.getSquares()[endSquare]) || board.getSquares()[endSquare] == 0){
-                            int[] move = {knightSquare, endSquare};
-                            allKnightPseudoLegalMoves.add(move);
-                        }
-                    } else {
-                        //if black then cant push onto lower case as these are blacks own pieces
-                        if (!Character.isLowerCase(board.getSquares()[endSquare]) || board.getSquares()[endSquare] == 0){
-                            int[] move = {knightSquare, endSquare};
-                            allKnightPseudoLegalMoves.add(move);
-                        }
+                    //refactored to reduce if else
+                    if (checkEndSquareColour(board.getSquares(), colourToCalculate, endSquare)){
+                        int[] move = {knightSquare, endSquare};
+                        allKnightPseudoLegalMoves.add(move);
                     }
-                    //System.out.println(Arrays.toString(move));
                 }
 
             }
@@ -90,5 +74,16 @@ public class Moves {
 
         //return list of moves
         return allKnightPseudoLegalMoves;
+    }
+
+
+    //checks the end square for current colour of if empty
+    public static boolean checkEndSquareColour(char[] squares, char colour, int squareIndex){
+
+        if (colour == 'w'){
+            return !Character.isUpperCase(squares[squareIndex]) || squares[squareIndex] == 0;
+        } else {
+            return !Character.isLowerCase(squares[squareIndex]) || squares[squareIndex] == 0;
+        }
     }
 }
