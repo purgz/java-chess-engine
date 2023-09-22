@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.List;
+
 public class Main {
 
     private static final String startingFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -11,6 +14,10 @@ public class Main {
         //board.createGameBoard(enPassantFen);
         System.out.println(board);
 
-        Moves.knightPseudoLegalMoves(board);
+        List<int[]> moves =  Moves.knightPseudoLegalMoves(board);
+
+        for (int[] move : moves){
+            System.out.println(Arrays.toString(move));
+        }
     }
 }

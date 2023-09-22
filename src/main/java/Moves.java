@@ -5,8 +5,6 @@ import java.util.List;
 public class Moves {
 
     //generate psudo legal moves for knights
-
-
     //if the knight is on the outer two files then some moves need to be removed
     //probably a much smarter way of doing this but hard coding the options was easy
     final static int[] KNIGHT_MOVE_VALUES = {6,-6,10,-10,15,-15,17,-17};
@@ -41,7 +39,7 @@ public class Moves {
             }
         }
 
-        System.out.println(knightSquares);
+        //System.out.println(knightSquares);
 
         //calculate knight moves
         for (Integer knightSquare : knightSquares){
@@ -61,10 +59,22 @@ public class Moves {
                 knightMoveOptions = KNIGHT_MOVE_VALUES;
             }
 
-            System.out.println(Arrays.toString(knightMoveOptions));
+            //System.out.println(Arrays.toString(knightMoveOptions));
             //calculate all the moves for each possibility - check for same colour pieces as can't move to these squares
-        }
 
+
+            for (int moveOption : knightMoveOptions){
+
+                int endSquare = knightSquare + moveOption;
+
+                if (endSquare < 64 && endSquare > -1){
+                    int[] move = {knightSquare, endSquare};
+                    allKnightPseudoLegalMoves.add(move);
+                    //System.out.println(Arrays.toString(move));
+                }
+
+            }
+        }
 
         //return list of moves
         return allKnightPseudoLegalMoves;
