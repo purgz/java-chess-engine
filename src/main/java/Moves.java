@@ -13,6 +13,8 @@ public class Moves {
     final static int[] KNIGHT_MOVE_VALUES_H_FILE = {6,-10,15,-17};
     final static int[] KNIGHT_MOVE_VALUES_G_FILE = {6,-10,15,-15,17,-17};
 
+    final static int[] SLIDING_MOVE_VALUE = {1,-1,8,-8,7,9,-7,-9};
+
     //returns list of int[] length 2 with start square and end square for each move given as board index 0 - 63
     public static List<int[]> knightPseudoLegalMoves(Board board){
 
@@ -58,11 +60,14 @@ public class Moves {
 
             for (int moveOption : knightMoveOptions){
 
+                //calculate all the move options
                 int endSquare = knightSquare + moveOption;
 
+                //ensure the move stays on the board
                 if (endSquare < 64 && endSquare > -1){
 
                     //refactored to reduce if else
+                    //if the end square is empty or opponent colour then add to moves
                     if (checkEndSquareColour(board.getSquares(), colourToCalculate, endSquare)){
                         int[] move = {knightSquare, endSquare};
                         allKnightPseudoLegalMoves.add(move);
@@ -74,6 +79,84 @@ public class Moves {
 
         //return list of moves
         return allKnightPseudoLegalMoves;
+    }
+
+
+    public static List<int[]> slidingPiecePseudoLegalMoves(Board board, char piece, char colour){
+
+        //changes depending on the piece
+        int moveValuesStartIndex;
+        int moveValuesEndIndex;
+
+        switch (piece)
+        {
+            case 'r':
+            case 'R':
+                moveValuesStartIndex = 0;
+                moveValuesEndIndex = 3;
+                break;
+            case 'b':
+            case 'B':
+                moveValuesStartIndex = 4;
+                moveValuesEndIndex = 7;
+                break;
+            default:
+                moveValuesStartIndex = 0;
+                moveValuesEndIndex = 7;
+                break;
+        }
+
+        List<int[]> slidingPiecePseudoLegalMoves = new ArrayList<>();
+
+        List<Integer> pieceSquares = new ArrayList<>();
+
+        //find the squares for given piece i.e r/R
+        for (int i = 0; i < board.getSquares().length; i++){
+
+            if (board.getSquares()[i] == piece){
+                pieceSquares.add(i);
+            }
+        }
+
+
+        for (int pieceSquare : pieceSquares){
+
+            for (int i = moveValuesStartIndex; i <= moveValuesEndIndex ; i++){
+
+                int moveOption = SLIDING_MOVE_VALUE[i];
+
+                //make new move until side of board or piece is hit
+
+                int endSquare = pieceSquare + moveOption;
+
+                if (endSquare < 64 && endSquare > -1 && !moveBoardWrap(pieceSquare, endSquare)){
+
+                    if (checkEndSquareColour(board.getSquares(), colour, endSquare)){
+
+                        int[] move = {pieceSquare, endSquare};
+                        slidingPiecePseudoLegalMoves.add(move);
+                    }
+                }
+
+            }
+        }
+
+        return slidingPiecePseudoLegalMoves;
+    }
+
+
+    //going to bed used for all piece calculation other than knights so refactored into its own method
+    public static boolean moveBoardWrap(int startSquare, int endSquare){
+
+        //if a move is wrapping across the board then return true, and it needs to be removed
+        if (Util.isOnAFile(startSquare) && Util.isOnHFile(endSquare)){
+            return true;
+        }
+        if (Util.isOnHFile(startSquare) && Util.isOnAFile(endSquare)){
+            return true;
+        }
+
+        return false;
     }
 
 
