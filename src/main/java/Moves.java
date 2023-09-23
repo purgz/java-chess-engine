@@ -124,20 +124,32 @@ public class Moves {
             for (int i = moveValuesStartIndex; i <= moveValuesEndIndex ; i++){
 
                 int moveOption = SLIDING_MOVE_VALUE[i];
+               // System.out.println("MOVE OPTION " + moveOption);
 
-                //make new move until side of board or piece is hit
+                int previousSquare = pieceSquare;
+                //8 is the max iterations if a piece moves full length of board
+                for (int moveOptionMultiplier = 1; moveOptionMultiplier <= 8; moveOptionMultiplier++){
 
-                int endSquare = pieceSquare + moveOption;
+                    int endSquare = pieceSquare + moveOption * moveOptionMultiplier;
 
-                if (endSquare < 64 && endSquare > -1 && !moveBoardWrap(pieceSquare, endSquare)){
+                    if (endSquare < 64 && endSquare > -1 && !moveBoardWrap(previousSquare, endSquare)){
 
-                    if (checkEndSquareColour(board.getSquares(), colour, endSquare)){
+                        if (checkEndSquareColour(board.getSquares(), colour, endSquare)){
 
-                        int[] move = {pieceSquare, endSquare};
-                        slidingPiecePseudoLegalMoves.add(move);
+                            int[] move = {pieceSquare, endSquare};
+                            slidingPiecePseudoLegalMoves.add(move);
+                        }
+
+                        if (board.getSquares()[endSquare] != 0){
+                            break;
+                        }
+
+                        previousSquare = endSquare;
+                    } else {
+
+                        break;
                     }
                 }
-
             }
         }
 
@@ -162,7 +174,6 @@ public class Moves {
 
     //checks the end square for current colour of if empty
     public static boolean checkEndSquareColour(char[] squares, char colour, int squareIndex){
-
         if (colour == 'w'){
             return !Character.isUpperCase(squares[squareIndex]) || squares[squareIndex] == 0;
         } else {
