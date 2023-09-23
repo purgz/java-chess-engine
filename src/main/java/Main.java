@@ -21,5 +21,7 @@ public class Main {
         for (int[] move : moves){
             System.out.println(Arrays.toString(move));
         }
+
+        board.prettyPrintBoard();
     }
 }

@@ -175,5 +175,28 @@ public class Board {
             }
         }
     }
+    
 
+    public void prettyPrintBoard(){
+
+        String board = "";
+        for (int i = 0; i < squares.length; i ++){
+
+            if (i % 8 == 0){
+                board += "\n";
+                board += i / 8 + 1;
+                board += " | ";
+            }
+
+            if (squares[i] == 0){
+                board += " ";
+            } else{
+                board += squares[i];
+            }
+            board += " | ";
+        }
+
+        board += "\n    a   b   c   d   e   f   g   h  ";
+        System.out.println(board);
+    }
 }

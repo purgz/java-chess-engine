@@ -88,6 +88,7 @@ public class Moves {
         int moveValuesStartIndex;
         int moveValuesEndIndex;
 
+        //select correct move options based on piece
         switch (piece)
         {
             case 'r':
@@ -124,8 +125,8 @@ public class Moves {
             for (int i = moveValuesStartIndex; i <= moveValuesEndIndex ; i++){
 
                 int moveOption = SLIDING_MOVE_VALUE[i];
-               // System.out.println("MOVE OPTION " + moveOption);
 
+                //keep track of previous square to stop board wrapping
                 int previousSquare = pieceSquare;
                 //8 is the max iterations if a piece moves full length of board
                 for (int moveOptionMultiplier = 1; moveOptionMultiplier <= 8; moveOptionMultiplier++){
@@ -134,19 +135,21 @@ public class Moves {
 
                     if (endSquare < 64 && endSquare > -1 && !moveBoardWrap(previousSquare, endSquare)){
 
+                        //if the take is valid then add to moves
                         if (checkEndSquareColour(board.getSquares(), colour, endSquare)){
-
                             int[] move = {pieceSquare, endSquare};
                             slidingPiecePseudoLegalMoves.add(move);
                         }
 
+                        //if we either take or find our own piece then stop generating
                         if (board.getSquares()[endSquare] != 0){
                             break;
                         }
 
+                        //otherwise, do next move and update previous square
                         previousSquare = endSquare;
                     } else {
-
+                        //if leaving the board or wrapping the board then break loop
                         break;
                     }
                 }
@@ -155,6 +158,8 @@ public class Moves {
 
         return slidingPiecePseudoLegalMoves;
     }
+
+    // TODO: 23/09/2023 king pseudo legal moves and pawn pseudo legal moves 
 
 
     //going to bed used for all piece calculation other than knights so refactored into its own method
