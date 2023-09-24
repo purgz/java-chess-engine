@@ -82,6 +82,20 @@ public class Moves {
     }
 
 
+    public static List<int[]> allSlidingPiecePseudoLegalMoves(Board board){
+
+        char colour = board.getSideToMove();
+
+        List<int[]> allSlidingPiecePseudoLegalMoves = new ArrayList<>();
+
+        for (int pieceIndex = 0; pieceIndex < board.getSquares().length; pieceIndex++){
+// TODO: 24/09/2023 get locations of each sliding piece and add their move to the List 
+        }
+        
+        return allSlidingPiecePseudoLegalMoves;
+    }
+
+
     public static List<int[]> slidingPiecePseudoLegalMoves(Board board, char piece, char colour){
 
         //changes depending on the piece

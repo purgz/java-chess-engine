@@ -175,7 +175,7 @@ public class Board {
             }
         }
     }
-    
+
 
     public void prettyPrintBoard(){
 
