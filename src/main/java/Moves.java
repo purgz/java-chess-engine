@@ -85,11 +85,25 @@ public class Moves {
     public static List<int[]> allSlidingPiecePseudoLegalMoves(Board board){
 
         char colour = board.getSideToMove();
+        char[] pieceOptions;
+        if (colour == 'w'){
+            pieceOptions = new char[]{'R', 'B', 'Q'};
+        } else {
+            pieceOptions = new char[]{'r', 'b', 'q'};
+        }
 
         List<int[]> allSlidingPiecePseudoLegalMoves = new ArrayList<>();
 
         for (int pieceIndex = 0; pieceIndex < board.getSquares().length; pieceIndex++){
-// TODO: 24/09/2023 get locations of each sliding piece and add their move to the List 
+
+            //check if the current piece is a rook queen or bishop of correct colour
+            if (board.getSquares()[pieceIndex] == pieceOptions[0] ||
+                    board.getSquares()[pieceIndex] == pieceOptions[1] ||
+                    board.getSquares()[pieceIndex] == pieceOptions[2]){
+
+                char piece = board.getSquares()[pieceIndex];
+                allSlidingPiecePseudoLegalMoves.addAll(slidingPiecePseudoLegalMoves(board, piece, colour));
+            }
         }
         
         return allSlidingPiecePseudoLegalMoves;
