@@ -31,15 +31,8 @@ public class Moves {
             knightChar = 'n';
         }
 
-        List<Integer> knightSquares = new ArrayList<>();
-
-        //find squares with knights
-        for (int i = 0; i < board.getSquares().length; i++){
-
-            if (board.getSquares()[i] == knightChar){
-                knightSquares.add(i);
-            }
-        }
+        //find square knight is on
+        List<Integer> knightSquares = findPieceSquares(board, knightChar);
 
         for (Integer knightSquare : knightSquares){
 
@@ -187,10 +180,39 @@ public class Moves {
         return slidingPiecePseudoLegalMoves;
     }
 
-    // TODO: 23/09/2023 king pseudo legal moves and pawn pseudo legal moves 
+    // TODO: 23/09/2023 king pseudo legal moves and pawn pseudo legal moves
+    // pawn pseudo-legal moves will require checks for diagonal takes, as well as en-passant which can use the board en-passant target square
+    // pawn diagonal takes will also need to use the moveBoardWrap to stop overlapping board due to nature of board represented as a 64 length array
+
+    public static List<int[]> kingPsuedoLegalMoves(Board board){
+
+        List<int[]> kingPseudoLegalMoves = new ArrayList<>();
+
+        for (int i = 0; i < board.getSquares().length; i ++){
+
+        }
 
 
-    //going to bed used for all piece calculation other than knights so refactored into its own method
+
+
+        return kingPseudoLegalMoves;
+    }
+
+
+    public static List<Integer> findPieceSquares(Board board, char piece){
+        List<Integer> pieceSquares = new ArrayList<>();
+
+        for (int i = 0; i < board.getSquares().length; i ++){
+
+            if (board.getSquares()[i] == piece){
+                pieceSquares.add(i);
+            }
+        }
+
+        return pieceSquares;
+    }
+
+    //going to be used for all piece calculation other than knights so refactored into its own method
     public static boolean moveBoardWrap(int startSquare, int endSquare){
 
         //if a move is wrapping across the board then return true, and it needs to be removed
