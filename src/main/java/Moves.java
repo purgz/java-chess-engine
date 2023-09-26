@@ -163,13 +163,32 @@ public class Moves {
     // pawn pseudo-legal moves will require checks for diagonal takes, as well as en-passant which can use the board en-passant target square
     // pawn diagonal takes will also need to use the moveBoardWrap to stop overlapping board due to nature of board represented as a 64 length array
 
-    public static List<int[]> kingPsuedoLegalMoves(Board board){
+    public static List<int[]> kingPseudoLegalMoves(Board board){
 
         char kingChar = board.getSideToMove() == 'w' ? 'K' : 'k';
 
+        //only one king square so list not really needed, but it means I can reuse the existing findPieceSquare function
         List<Integer> kingSquare = findPieceSquares(board, kingChar);
 
         List<int[]> kingPseudoLegalMoves = new ArrayList<>();
+
+        for (Integer square : kingSquare){
+            for (int i = 0; i < SLIDING_MOVE_VALUE.length; i ++){
+
+                int moveOption = SLIDING_MOVE_VALUE[i];
+
+                int endSquare = square + moveOption;
+
+                if (endSquare < 64 && endSquare > -1 && !moveBoardWrap(square, endSquare)){
+
+                    //if the take is valid then add to moves
+                    if (checkEndSquareColour(board.getSquares(), board.getSideToMove(), endSquare)){
+                        int[] move = {square, endSquare};
+                        kingPseudoLegalMoves.add(move);
+                    }
+                }
+            }
+        }
 
         return kingPseudoLegalMoves;
     }
