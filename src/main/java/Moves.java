@@ -22,14 +22,7 @@ public class Moves {
         List<int[]> allKnightPseudoLegalMoves = new ArrayList<>();
 
         char colourToCalculate = board.getSideToMove();
-        char knightChar;
-
-        //find the correct night char
-        if (colourToCalculate == 'w'){
-            knightChar = 'N';
-        } else {
-            knightChar = 'n';
-        }
+        char knightChar = colourToCalculate == 'w' ? 'N' : 'n';
 
         //find square knight is on
         List<Integer> knightSquares = findPieceSquares(board, knightChar);
@@ -78,12 +71,7 @@ public class Moves {
     public static List<int[]> allSlidingPiecePseudoLegalMoves(Board board){
 
         char colour = board.getSideToMove();
-        char[] pieceOptions;
-        if (colour == 'w'){
-            pieceOptions = new char[]{'R', 'B', 'Q'};
-        } else {
-            pieceOptions = new char[]{'r', 'b', 'q'};
-        }
+        char[] pieceOptions = colour == 'w' ? new char[]{'R', 'B', 'Q'} : new char[]{'r', 'b', 'q'};
 
         List<int[]> allSlidingPiecePseudoLegalMoves = new ArrayList<>();
 
@@ -130,16 +118,7 @@ public class Moves {
 
         List<int[]> slidingPiecePseudoLegalMoves = new ArrayList<>();
 
-        List<Integer> pieceSquares = new ArrayList<>();
-
-        //find the squares for given piece i.e r/R
-        for (int i = 0; i < board.getSquares().length; i++){
-
-            if (board.getSquares()[i] == piece){
-                pieceSquares.add(i);
-            }
-        }
-
+        List<Integer> pieceSquares = findPieceSquares(board, piece);
 
         for (int pieceSquare : pieceSquares){
 
@@ -186,14 +165,11 @@ public class Moves {
 
     public static List<int[]> kingPsuedoLegalMoves(Board board){
 
+        char kingChar = board.getSideToMove() == 'w' ? 'K' : 'k';
+
+        List<Integer> kingSquare = findPieceSquares(board, kingChar);
+
         List<int[]> kingPseudoLegalMoves = new ArrayList<>();
-
-        for (int i = 0; i < board.getSquares().length; i ++){
-
-        }
-
-
-
 
         return kingPseudoLegalMoves;
     }
