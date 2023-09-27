@@ -159,9 +159,72 @@ public class Moves {
         return slidingPiecePseudoLegalMoves;
     }
 
-    // TODO: 23/09/2023 king pseudo legal moves and pawn pseudo legal moves
     // pawn pseudo-legal moves will require checks for diagonal takes, as well as en-passant which can use the board en-passant target square
     // pawn diagonal takes will also need to use the moveBoardWrap to stop overlapping board due to nature of board represented as a 64 length array
+
+    public static List<int[]> pawnPseudoLegalMoves(Board board){
+
+        char pawnChar = board.getSideToMove() == 'w' ? 'P' : 'p';
+
+        List<int[]> pawnPseudoLegalMoves = new ArrayList<>();
+
+        List<Integer> pawnSquares = findPieceSquares(board, pawnChar);
+
+        for (Integer pieceSquare : pawnSquares){
+
+            List<Integer> pieceMoveOptions = new ArrayList<>();
+
+            //since pawn moves are completely different for each side need to add options separately
+            if (board.getSideToMove() == 'w'){
+
+                //check if it is the first time this pawn is moving
+                //removes this from the generate move function as the squares for the starting pawn rank is hard to
+                //calculate
+                if (pieceSquare < 56 && pieceSquare > 47 && (pieceSquare - 16 != 0)){
+                    pieceMoveOptions.add(-16);
+                }
+                generatePawnMoves(board, pieceSquare, pieceMoveOptions, -1);
+            } else {
+
+                if (pieceSquare < 16 && pieceSquare > 7 && (pieceSquare + 16 != 0)){
+                    pieceMoveOptions.add(16);
+                }
+                generatePawnMoves(board, pieceSquare, pieceMoveOptions, 1);
+            }
+
+            for (Integer moveOption : pieceMoveOptions){
+                int endSquare = pieceSquare + moveOption;
+
+                if (endSquare > -1 && endSquare < 64 && !moveBoardWrap(pieceSquare, endSquare)){
+                    int[] move = {pieceSquare, endSquare};
+                    pawnPseudoLegalMoves.add(move);
+                }
+            }
+
+        }
+        return pawnPseudoLegalMoves;
+    }
+
+    //refactored to use the same code for black and white just by changing dir variable
+    private static void generatePawnMoves(Board board, int pieceSquare, List<Integer> pieceMoveOptions, int dir){
+        if (board.getSquares()[pieceSquare + dir * 8] == 0){
+            pieceMoveOptions.add(dir * 8);
+        }
+
+        //if diagonal is not empty AND contains opponent piece then you can move there
+        if (checkPawnDiagonal(board, pieceSquare,dir * 7)){
+            pieceMoveOptions.add(dir * 7);
+        }
+
+        if (checkPawnDiagonal(board, pieceSquare, dir * 9)){
+            pieceMoveOptions.add(dir * 9);
+        }
+    }
+
+    public static boolean checkPawnDiagonal(Board board, int pieceSquare, int moveOption){
+        return (board.getSquares()[pieceSquare + moveOption] != 0) &&
+                checkEndSquareColour(board.getSquares(), board.getSideToMove(), pieceSquare + moveOption);
+    }
 
     public static List<int[]> kingPseudoLegalMoves(Board board){
 
