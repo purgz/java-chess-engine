@@ -17,7 +17,7 @@ public class Board {
     private int enPassantTargetSquare;
 
     //no args constructor if wanting to manually call the methods to set board
-    public Board(){};
+    public Board(){}
 
     public String getBoardStartingFen() {
         return boardStartingFen;

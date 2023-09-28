@@ -1,10 +1,9 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Moves {
 
-    //generate psudo legal moves for knights
+    //generate pseudo legal moves for knights
     //if the knight is on the outer two files then some moves need to be removed
     //probably a much smarter way of doing this but hard coding the options was easy
     final static int[] KNIGHT_MOVE_VALUES = {6,-6,10,-10,15,-15,17,-17};
@@ -98,22 +97,19 @@ public class Moves {
         int moveValuesEndIndex;
 
         //select correct move options based on piece
-        switch (piece)
-        {
-            case 'r':
-            case 'R':
+        switch (piece) {
+            case 'r', 'R' -> {
                 moveValuesStartIndex = 0;
                 moveValuesEndIndex = 3;
-                break;
-            case 'b':
-            case 'B':
+            }
+            case 'b', 'B' -> {
                 moveValuesStartIndex = 4;
                 moveValuesEndIndex = 7;
-                break;
-            default:
+            }
+            default -> {
                 moveValuesStartIndex = 0;
                 moveValuesEndIndex = 7;
-                break;
+            }
         }
 
         List<int[]> slidingPiecePseudoLegalMoves = new ArrayList<>();
@@ -133,7 +129,7 @@ public class Moves {
 
                     int endSquare = pieceSquare + moveOption * moveOptionMultiplier;
 
-                    if (endSquare < 64 && endSquare > -1 && !moveBoardWrap(previousSquare, endSquare)){
+                    if (endSquare < 64 && endSquare > -1 && moveBoardWrap(previousSquare, endSquare)){
 
                         //if the take is valid then add to moves
                         if (checkEndSquareColour(board.getSquares(), colour, endSquare)){
@@ -195,7 +191,7 @@ public class Moves {
             for (Integer moveOption : pieceMoveOptions){
                 int endSquare = pieceSquare + moveOption;
 
-                if (endSquare > -1 && endSquare < 64 && !moveBoardWrap(pieceSquare, endSquare)){
+                if (endSquare > -1 && endSquare < 64 && moveBoardWrap(pieceSquare, endSquare)){
                     int[] move = {pieceSquare, endSquare};
                     pawnPseudoLegalMoves.add(move);
                 }
@@ -242,16 +238,14 @@ public class Moves {
         List<int[]> kingPseudoLegalMoves = new ArrayList<>();
 
         for (Integer square : kingSquare){
-            for (int i = 0; i < SLIDING_MOVE_VALUE.length; i ++){
-
-                int moveOption = SLIDING_MOVE_VALUE[i];
+            for (int moveOption : SLIDING_MOVE_VALUE) {
 
                 int endSquare = square + moveOption;
 
-                if (endSquare < 64 && endSquare > -1 && !moveBoardWrap(square, endSquare)){
+                if (endSquare < 64 && endSquare > -1 && moveBoardWrap(square, endSquare)) {
 
                     //if the take is valid then add to moves
-                    if (checkEndSquareColour(board.getSquares(), board.getSideToMove(), endSquare)){
+                    if (checkEndSquareColour(board.getSquares(), board.getSideToMove(), endSquare)) {
                         int[] move = {square, endSquare};
                         kingPseudoLegalMoves.add(move);
                     }
@@ -260,6 +254,22 @@ public class Moves {
         }
 
         return kingPseudoLegalMoves;
+    }
+
+    //kind of a weird way to do this, but it was quite easy to reuse the current pseudo-legal move function
+    //just changes the current player - finds moves then changes back.
+    public static List<int[]> opponentPseudoLegalMoves(Board board){
+
+        char playerChar = board.getSideToMove();
+        char opponentChar = board.getSideToMove() == 'w' ? 'b' : 'w';
+
+        board.setSideToMove(opponentChar);
+
+        List<int[]> opponentPseudoLegalMoves = allPseudoLegalMoves(board);
+
+        board.setSideToMove(playerChar);
+
+        return opponentPseudoLegalMoves;
     }
 
     public static List<int[]> allPseudoLegalMoves(Board board){
@@ -293,13 +303,13 @@ public class Moves {
 
         //if a move is wrapping across the board then return true, and it needs to be removed
         if (Util.isOnAFile(startSquare) && Util.isOnHFile(endSquare)){
-            return true;
+            return false;
         }
         if (Util.isOnHFile(startSquare) && Util.isOnAFile(endSquare)){
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
 

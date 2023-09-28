@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-        Board board = new Board(enPassantFen);
+        Board board = new Board(testFen);
         //board.createGameBoard(enPassantFen);
         System.out.println(board);
 
@@ -20,7 +20,8 @@ public class Main {
         //List<int[]> moves =  Moves.kingPseudoLegalMoves(board);
         //List<int[]> moves = Moves.pawnPseudoLegalMoves(board);
 
-        List<int[]> moves= Moves.allPseudoLegalMoves(board);
+        //List<int[]> moves= Moves.allPseudoLegalMoves(board);
+        List<int[]> moves = Moves.opponentPseudoLegalMoves(board);
 
         for (int[] move : moves){
             System.out.println(Arrays.toString(move));

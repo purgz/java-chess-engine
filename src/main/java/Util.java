@@ -1,4 +1,3 @@
-import java.util.Arrays;
 
 public class Util {
 
@@ -22,9 +21,7 @@ public class Util {
         // 8 - num as the board works from top to bottom
         int rank = 8 - (rankChar - '0');
 
-        int boardIndex = (rank * 8) + file;
-
-        return boardIndex;
+        return (rank * 8) + file;
     }
 
     public static String convertBoardIndexToSquare(int index){
@@ -34,11 +31,7 @@ public class Util {
 
         char fileChar = (char)('a' + file);
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(fileChar);
-        sb.append(rank);
-
-        return sb.toString();
+        return String.valueOf(fileChar) + rank;
     }
 
     public static boolean isOnHFile(int boardIndex){
