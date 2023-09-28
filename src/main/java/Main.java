@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-        Board board = new Board(testFen);
+        Board board = new Board(enPassantFen);
         //board.createGameBoard(enPassantFen);
         System.out.println(board);
 
@@ -27,5 +27,8 @@ public class Main {
         }
 
         board.prettyPrintBoard();
+
+        System.out.println("***********************************");
+        System.out.println(board.convertBoardToFEN());
     }
 }

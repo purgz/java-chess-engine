@@ -9,6 +9,7 @@ public class Util {
     private static final int[] aFile = {0,8,16,24,32,40,48,56};
     private static final int[] bFile = {1,9,17,25,33,41,49,57};
 
+    //converts chess square such as e2 to an index in the board array
     public static int convertSquarePosToBoardIndex(String square){
 
         char fileChar = square.charAt(0);
@@ -24,6 +25,20 @@ public class Util {
         int boardIndex = (rank * 8) + file;
 
         return boardIndex;
+    }
+
+    public static String convertBoardIndexToSquare(int index){
+
+        int rank = 8 - index / 8;
+        int file = (index) % 8;
+
+        char fileChar = (char)('a' + file);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(fileChar);
+        sb.append(rank);
+
+        return sb.toString();
     }
 
     public static boolean isOnHFile(int boardIndex){
@@ -53,7 +68,6 @@ public class Util {
                 return true;
             }
         }
-
         return  false;
     }
 }

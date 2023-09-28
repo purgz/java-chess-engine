@@ -96,6 +96,74 @@ public class Board {
         setEnpassantTargetSquare(fenParts[3]);
     }
 
+    public String convertBoardToFEN(){
+
+        StringBuilder boardFen = new StringBuilder();
+
+        int emptySquareCount = 0;
+        for (int i = 0; i < squares.length; i++){
+
+            //add / for each rank
+            if (i % 8 == 0 && i != 0){
+                if (emptySquareCount != 0){
+                    boardFen.append(emptySquareCount);
+                }
+                boardFen.append("/");
+
+                emptySquareCount = 0;
+            }
+
+            if (squares[i] != 0){
+
+                if (emptySquareCount != 0){
+                    boardFen.append(emptySquareCount);
+                }
+
+                emptySquareCount = 0;
+
+                boardFen.append(squares[i]);
+            } else {
+
+                emptySquareCount++;
+            }
+        }
+
+        //add side to move to fen
+        boardFen.append(" " + sideToMove);
+
+        //castling rights format whiteKingchar,whitequeenchar,blackkingchar,blackqueenchar
+        String castlingRights = "";
+        if (whiteKingCastle){
+            castlingRights += 'K';
+        }
+        if (whiteQueenCastle) {
+            castlingRights += 'Q';
+        }
+        if (blackKingCastle) {
+            castlingRights += 'k';
+        }
+        if (blackQueenCastle) {
+            castlingRights += 'q';
+        }
+        if (castlingRights.equals("")){
+            castlingRights = "-";
+        }
+        boardFen.append(" " + castlingRights);
+
+        //en passant must be converted into board cell
+        if (enPassantTargetSquare == -1){
+            boardFen.append(" -");
+        } else {
+            String enPassantSquare = Util.convertBoardIndexToSquare(enPassantTargetSquare);
+            boardFen.append(" " + enPassantSquare);
+        }
+
+        //I don't really know what this last part of the fen string means, I will implement it, at some point, maybe....
+        boardFen.append(" 0 1");
+
+        return boardFen.toString();
+    }
+
     @Override
     public String toString() {
         return "Board{" +
