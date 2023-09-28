@@ -4,7 +4,7 @@ import java.util.List;
 public class Main {
 
     private static final String startingFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-    private static final String testFen = "8/8/2k5/5q2/5n2/8/5K2/8 b - - 0 1";
+    private static final String testFen = "8/8/2k5/5q2/8/8/5K2/8 w - - 0 1";
     private static final String enPassantFen = "rnbqkbnr/8/8/8/3Pp3/8/8/RNBQKBNR b KQkq d3 0 1";
 
     public static void main(String[] args) {
@@ -20,8 +20,8 @@ public class Main {
         //List<int[]> moves =  Moves.kingPseudoLegalMoves(board);
         //List<int[]> moves = Moves.pawnPseudoLegalMoves(board);
 
-        //List<int[]> moves= Moves.allPseudoLegalMoves(board);
-        List<int[]> moves = Moves.opponentPseudoLegalMoves(board);
+        List<int[]> moves= Moves.allPseudoLegalMoves(board);
+        //List<int[]> moves = Moves.opponentPseudoLegalMoves(board);
 
         for (int[] move : moves){
             System.out.println(Arrays.toString(move));
@@ -31,5 +31,8 @@ public class Main {
 
         System.out.println("***********************************");
         System.out.println(board.convertBoardToFEN());
+
+        System.out.println("***********************************");
+        System.out.println(board.isCurrentPlayerInCheck());
     }
 }

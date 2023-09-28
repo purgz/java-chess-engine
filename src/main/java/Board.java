@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.List;
 
 public class Board {
 
@@ -244,7 +245,6 @@ public class Board {
         }
     }
 
-
     public void prettyPrintBoard(){
 
         StringBuilder board = new StringBuilder();
@@ -266,5 +266,24 @@ public class Board {
 
         board.append("\n    a   b   c   d   e   f   g   h  ");
         System.out.println(board);
+    }
+
+    public boolean isCurrentPlayerInCheck(){
+
+        List<int[]> opponentPseudoLegalMoves = Moves.opponentPseudoLegalMoves(this);
+
+        char kingChar = sideToMove == 'w' ? 'K' : 'k';
+
+        List<Integer> kingPos = Moves.findPieceSquares(this, kingChar);
+
+        boolean inCheck = false;
+        for (int[] opMove : opponentPseudoLegalMoves){
+
+            if (opMove[1] == kingPos.get(0)){
+                inCheck = true;
+            }
+        }
+
+        return inCheck;
     }
 }

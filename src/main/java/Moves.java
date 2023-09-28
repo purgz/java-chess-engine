@@ -321,9 +321,4 @@ public class Moves {
             return !Character.isLowerCase(squares[squareIndex]) || squares[squareIndex] == 0;
         }
     }
-
-    //all pseudo legal move methods are now complete
-    // TODO: 27/09/2023 now need to make functions to update the game board for a given pseudo-legal move
-    // TODO: 27/09/2023  on each update move the en-passant target square needs to be updated
-    // TODO: 27/09/2023 need a method to check if the king is in check and a stack to undo moves to check for legality
 }
