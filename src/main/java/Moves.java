@@ -262,6 +262,18 @@ public class Moves {
         return kingPseudoLegalMoves;
     }
 
+    public static List<int[]> allPseudoLegalMoves(Board board){
+
+        List<int[]> pseudoLegalMoves = new ArrayList<>();
+
+        pseudoLegalMoves.addAll(allSlidingPiecePseudoLegalMoves(board));
+        pseudoLegalMoves.addAll(pawnPseudoLegalMoves(board));
+        pseudoLegalMoves.addAll(knightPseudoLegalMoves(board));
+        pseudoLegalMoves.addAll(kingPseudoLegalMoves(board));
+
+        return pseudoLegalMoves;
+    }
+
 
     public static List<Integer> findPieceSquares(Board board, char piece){
         List<Integer> pieceSquares = new ArrayList<>();
