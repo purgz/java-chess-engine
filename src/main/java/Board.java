@@ -129,7 +129,7 @@ public class Board {
         }
 
         //add side to move to fen
-        boardFen.append(" " + sideToMove);
+        boardFen.append(" ").append(sideToMove);
 
         //castling rights format whiteKingchar,whitequeenchar,blackkingchar,blackqueenchar
         String castlingRights = "";
@@ -148,14 +148,14 @@ public class Board {
         if (castlingRights.equals("")){
             castlingRights = "-";
         }
-        boardFen.append(" " + castlingRights);
+        boardFen.append(" ").append(castlingRights);
 
         //en passant must be converted into board cell
         if (enPassantTargetSquare == -1){
             boardFen.append(" -");
         } else {
             String enPassantSquare = Util.convertBoardIndexToSquare(enPassantTargetSquare);
-            boardFen.append(" " + enPassantSquare);
+            boardFen.append(" ").append(enPassantSquare);
         }
 
         //I don't really know what this last part of the fen string means, I will implement it, at some point, maybe....
@@ -247,24 +247,24 @@ public class Board {
 
     public void prettyPrintBoard(){
 
-        String board = "";
+        StringBuilder board = new StringBuilder();
         for (int i = 0; i < squares.length; i ++){
 
             if (i % 8 == 0){
-                board += "\n";
-                board += 9 - (i / 8 + 1);
-                board += " | ";
+                board.append("\n");
+                board.append(9 - (i / 8 + 1));
+                board.append(" | ");
             }
 
             if (squares[i] == 0){
-                board += " ";
+                board.append(" ");
             } else{
-                board += squares[i];
+                board.append(squares[i]);
             }
-            board += " | ";
+            board.append(" | ");
         }
 
-        board += "\n    a   b   c   d   e   f   g   h  ";
+        board.append("\n    a   b   c   d   e   f   g   h  ");
         System.out.println(board);
     }
 }
