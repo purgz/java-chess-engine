@@ -184,7 +184,7 @@ public class Board {
 
             if (i % 8 == 0){
                 board += "\n";
-                board += i / 8 + 1;
+                board += 9 - (i / 8 + 1);
                 board += " | ";
             }
 
