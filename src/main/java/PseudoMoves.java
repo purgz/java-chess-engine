@@ -198,12 +198,16 @@ public class PseudoMoves {
 
                 if (endSquare > -1 && endSquare < 64 && moveBoardWrap(pieceSquare, endSquare)){
 
+                    char capturedPiece;
                     boolean isEnPassant = false;
                     if (endSquare == board.getEnPassantTargetSquare()){
                         isEnPassant = true;
+                        capturedPiece = board.getSquares()[endSquare - dir * 8];
+                    } else {
+                        capturedPiece = board.getSquares()[endSquare];
                     }
                     Move move = new Move(pieceSquare, endSquare, pawnChar,
-                            board.getSquares()[endSquare], isEnPassant);
+                            capturedPiece, isEnPassant);
                     pawnPseudoLegalMoves.add(move);
                 }
             }

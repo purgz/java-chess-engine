@@ -19,7 +19,7 @@ public class Board {
     //need to check fen for en passant target square
     private int enPassantTargetSquare;
 
-    private Stack<Move> moveStack = new Stack<>();
+    public Stack<Move> moveStack = new Stack<>();
 
     //no args constructor if wanting to manually call the methods to set board
     public Board(){}
@@ -310,6 +310,15 @@ public class Board {
         return false;
     }
 
+    public boolean doLegalMove(Move move){
+        if (boardLegalMoves().contains(move)){
+            doMove(move);
+            return true;
+        }
+        return false;
+    }
+
+
     public boolean undoMove(Move move){
 
         if (move.isEnPassant()){
@@ -326,6 +335,10 @@ public class Board {
         return false;
     }
 
+    public void undoLastMove(){
+        undoMove(moveStack.peek());
+    }
+
     public List<Move> boardLegalMoves(){
 
         List<Move> legalMoves = new ArrayList<>();
@@ -335,8 +348,6 @@ public class Board {
         //do and undo each move
         for (Move move : allPseudoLegalMoves){
 
-            char captureSquareChar = squares[move.getEndSquare()];
-
             doMove(move);
 
             if (!isCurrentPlayerInCheck()){
@@ -344,6 +355,7 @@ public class Board {
             }
             //restore position and remove move from stack
             undoMove(move);
+
 
         }
 

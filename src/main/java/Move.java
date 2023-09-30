@@ -15,6 +15,19 @@ public class Move {
     }
 
     @Override
+    public boolean equals(Object obj){
+        Move move = (Move) obj;
+        if (startSquare == move.getStartSquare() &&
+                endSquare == move.getEndSquare() &&
+                piece == move.getPiece() &&
+                capturedPiece == move.getCapturedPiece() &&
+                isEnPassant == move.isEnPassant()){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "Move{" +
                 "startSquare=" + startSquare +
