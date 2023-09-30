@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 public class Board {
 
@@ -17,6 +18,8 @@ public class Board {
 
     //need to check fen for en passant target square
     private int enPassantTargetSquare;
+
+    private Stack<Move> moveStack = new Stack<>();
 
     //no args constructor if wanting to manually call the methods to set board
     public Board(){}
@@ -271,16 +274,16 @@ public class Board {
 
     public boolean isCurrentPlayerInCheck(){
 
-        List<int[]> opponentPseudoLegalMoves = Moves.opponentPseudoLegalMoves(this);
+        List<Move> opponentPseudoLegalMoves = PseudoMoves.opponentPseudoLegalMoves(this);
 
         char kingChar = sideToMove == 'w' ? 'K' : 'k';
 
-        List<Integer> kingPos = Moves.findPieceSquares(this, kingChar);
+        List<Integer> kingPos = PseudoMoves.findPieceSquares(this, kingChar);
 
         boolean inCheck = false;
-        for (int[] opMove : opponentPseudoLegalMoves){
+        for (Move opMove : opponentPseudoLegalMoves){
 
-            if (opMove[1] == kingPos.get(0)){
+            if (opMove.getEndSquare() == kingPos.get(0)){
                 inCheck = true;
             }
         }
@@ -288,62 +291,60 @@ public class Board {
     }
 
     //this just move piece ignoring all else - iterate through all pseudo moves to check
-    public boolean doMove(int[] move){
+    public boolean doMove(Move move){
 
-        int startSquare = move[0];
-        int endSquare = move[1];
+        int startSquare = move.getStartSquare();
+        int endSquare = move.getEndSquare();
 
-        if (squares[move[1]] == enPassantTargetSquare && Character.toLowerCase(squares[move[0]]) == 'p'){
+        if (move.isEnPassant()){
             int dir = sideToMove == 'w' ? 1 : -1;
-            int oldPawnSquare = enPassantTargetSquare + (dir * 8);
-
-            System.out.println(oldPawnSquare);
-            squares[oldPawnSquare] = 0;
+            squares[move.getStartSquare()] = 0;
+            squares[move.getEndSquare()] = move.getPiece();
+            squares[move.getEndSquare() + dir * 8] = 0;
+        } else {
             squares[endSquare] = squares[startSquare];
             squares[startSquare] = 0;
         }
-        squares[endSquare] = squares[startSquare];
-        squares[startSquare] = 0;
+        moveStack.push(move);
 
         return false;
     }
 
+    public boolean undoMove(Move move){
 
+        if (move.isEnPassant()){
+            int dir = sideToMove == 'w' ? 1 : -1;
+            squares[move.getStartSquare()] = move.getPiece();
+            squares[move.getEndSquare()] = 0;
+            squares[move.getEndSquare() + dir * 8] = move.getCapturedPiece();
+        } else {
+            squares[move.getEndSquare()] = move.getCapturedPiece();
+            squares[move.getStartSquare()] = move.getPiece();
+        }
 
-    public List<int[]> boardLegalMoves(){
+        moveStack.pop();
+        return false;
+    }
 
-        List<int[]> legalMoves = new ArrayList<>();
+    public List<Move> boardLegalMoves(){
 
-        List<int[]> allPseudoLegalMoves = Moves.allPseudoLegalMoves(this);
+        List<Move> legalMoves = new ArrayList<>();
+
+        List<Move> allPseudoLegalMoves = PseudoMoves.allPseudoLegalMoves(this);
 
         //do and undo each move
-        for (int[] move : allPseudoLegalMoves){
+        for (Move move : allPseudoLegalMoves){
 
-            char captureSquareChar = squares[move[1]];
-            int[] reverseMove = {move[1], move[0]};
+            char captureSquareChar = squares[move.getEndSquare()];
 
-            if (squares[move[1]] == enPassantTargetSquare && Character.toLowerCase(squares[move[0]]) == 'p'){
-                //if piece is a pawn and going to the en passant square
-                System.out.println("THIS IS WORKING");
-                char enPassantPiece = squares[enPassantTargetSquare];
-                int dir = sideToMove == 'w' ? 1 : -1;
-                int oldPawnSquare = enPassantTargetSquare + (dir * 8);
-                doMove(move);
-                squares[oldPawnSquare] = 0;
-                if (!isCurrentPlayerInCheck()){
-                    legalMoves.add(move);
-                }
-                doMove(reverseMove);
-                squares[oldPawnSquare] = enPassantPiece;
-            } else {
-                doMove(move);
-                if (!isCurrentPlayerInCheck()){
-                    legalMoves.add(move);
-                }
-                doMove(reverseMove);
-                //restore piece if taken
-                squares[move[1]] = captureSquareChar;
+            doMove(move);
+
+            if (!isCurrentPlayerInCheck()){
+                legalMoves.add(move);
             }
+            //restore position and remove move from stack
+            undoMove(move);
+
         }
 
         return legalMoves;

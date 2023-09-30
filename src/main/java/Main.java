@@ -16,16 +16,25 @@ public class Main {
         System.out.println(board);
 
 
-        List<int[]> moves = board.boardLegalMoves();
+        //List<Move> moves = board.boardLegalMoves();
 
-        for (int[] move : moves){
-            System.out.println(Arrays.toString(move));
+        List<Move> moves = PseudoMoves.allPseudoLegalMoves(board);
+        for (Move move : moves){
+            System.out.println(move);
         }
+
 
         System.out.println("************************************");
         board.prettyPrintBoard();
 
-        //board.doMove(new int[]{36,43});
-       // board.prettyPrintBoard();
+        Move enPassantTestMove =  new Move(36,43, 'p', 'P' , true);
+        board.doMove(enPassantTestMove);
+        board.prettyPrintBoard();
+
+        board.undoMove(enPassantTestMove);
+        board.prettyPrintBoard();
+
+       // board.doMove(new int[]{36,43});
+        //board.prettyPrintBoard();
     }
 }

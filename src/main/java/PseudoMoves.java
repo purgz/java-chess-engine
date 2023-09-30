@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Moves {
+public class PseudoMoves {
 
     //generate pseudo legal moves for knights
     //if the knight is on the outer two files then some moves need to be removed
@@ -15,10 +15,10 @@ public class Moves {
     final static int[] SLIDING_MOVE_VALUE = {1,-1,8,-8,7,9,-7,-9};
 
     //returns list of int[] length 2 with start square and end square for each move given as board index 0 - 63
-    public static List<int[]> knightPseudoLegalMoves(Board board){
+    public static List<Move> knightPseudoLegalMoves(Board board){
 
 
-        List<int[]> allKnightPseudoLegalMoves = new ArrayList<>();
+        List<Move> allKnightPseudoLegalMoves = new ArrayList<>();
 
         char colourToCalculate = board.getSideToMove();
         char knightChar = colourToCalculate == 'w' ? 'N' : 'n';
@@ -54,7 +54,9 @@ public class Moves {
                     //refactored to reduce if else
                     //if the end square is empty or opponent colour then add to moves
                     if (checkEndSquareColour(board.getSquares(), colourToCalculate, endSquare)){
-                        int[] move = {knightSquare, endSquare};
+
+                        Move move = new Move(knightSquare, endSquare, knightChar,
+                                board.getSquares()[endSquare],false );
                         allKnightPseudoLegalMoves.add(move);
                     }
                 }
@@ -67,12 +69,12 @@ public class Moves {
     }
 
 
-    public static List<int[]> allSlidingPiecePseudoLegalMoves(Board board){
+    public static List<Move> allSlidingPiecePseudoLegalMoves(Board board){
 
         char colour = board.getSideToMove();
         char[] pieceOptions = colour == 'w' ? new char[]{'R', 'B', 'Q'} : new char[]{'r', 'b', 'q'};
 
-        List<int[]> allSlidingPiecePseudoLegalMoves = new ArrayList<>();
+        List<Move> allSlidingPiecePseudoLegalMoves = new ArrayList<>();
 
         for (int pieceIndex = 0; pieceIndex < board.getSquares().length; pieceIndex++){
 
@@ -90,7 +92,7 @@ public class Moves {
     }
 
 
-    public static List<int[]> slidingPiecePseudoLegalMoves(Board board, char piece, char colour){
+    public static List<Move> slidingPiecePseudoLegalMoves(Board board, char piece, char colour){
 
         //changes depending on the piece
         int moveValuesStartIndex;
@@ -112,7 +114,7 @@ public class Moves {
             }
         }
 
-        List<int[]> slidingPiecePseudoLegalMoves = new ArrayList<>();
+        List<Move> slidingPiecePseudoLegalMoves = new ArrayList<>();
 
         List<Integer> pieceSquares = findPieceSquares(board, piece);
 
@@ -133,7 +135,8 @@ public class Moves {
 
                         //if the take is valid then add to moves
                         if (checkEndSquareColour(board.getSquares(), colour, endSquare)){
-                            int[] move = {pieceSquare, endSquare};
+                            Move move = new Move(pieceSquare, endSquare,
+                                    board.getSquares()[pieceSquare],board.getSquares()[endSquare], false);
                             slidingPiecePseudoLegalMoves.add(move);
                         }
 
@@ -158,11 +161,12 @@ public class Moves {
     // pawn pseudo-legal moves will require checks for diagonal takes, as well as en-passant which can use the board en-passant target square
     // pawn diagonal takes will also need to use the moveBoardWrap to stop overlapping board due to nature of board represented as a 64 length array
 
-    public static List<int[]> pawnPseudoLegalMoves(Board board){
+    public static List<Move> pawnPseudoLegalMoves(Board board){
 
         char pawnChar = board.getSideToMove() == 'w' ? 'P' : 'p';
+        int dir = board.getSideToMove() == 'w' ? -1 : 1;
 
-        List<int[]> pawnPseudoLegalMoves = new ArrayList<>();
+        List<Move> pawnPseudoLegalMoves = new ArrayList<>();
 
         List<Integer> pawnSquares = findPieceSquares(board, pawnChar);
 
@@ -179,20 +183,26 @@ public class Moves {
                 if (pieceSquare < 56 && pieceSquare > 47 && (board.getSquares()[pieceSquare - 16] != 0)){
                     pieceMoveOptions.add(-16);
                 }
-                generatePawnMoves(board, pieceSquare, pieceMoveOptions, -1);
+                generatePawnMoves(board, pieceSquare, pieceMoveOptions, dir);
             } else {
 
                 if (pieceSquare < 16 && pieceSquare > 7 && (board.getSquares()[pieceSquare + 16] != 0)){
                     pieceMoveOptions.add(16);
                 }
-                generatePawnMoves(board, pieceSquare, pieceMoveOptions, 1);
+                generatePawnMoves(board, pieceSquare, pieceMoveOptions, dir);
             }
 
             for (Integer moveOption : pieceMoveOptions){
                 int endSquare = pieceSquare + moveOption;
 
                 if (endSquare > -1 && endSquare < 64 && moveBoardWrap(pieceSquare, endSquare)){
-                    int[] move = {pieceSquare, endSquare};
+
+                    boolean isEnPassant = false;
+                    if (endSquare == board.getEnPassantTargetSquare()){
+                        isEnPassant = true;
+                    }
+                    Move move = new Move(pieceSquare, endSquare, pawnChar,
+                            board.getSquares()[endSquare], isEnPassant);
                     pawnPseudoLegalMoves.add(move);
                 }
             }
@@ -228,14 +238,14 @@ public class Moves {
                 checkEndSquareColour(board.getSquares(), board.getSideToMove(), pieceSquare + moveOption);
     }
 
-    public static List<int[]> kingPseudoLegalMoves(Board board){
+    public static List<Move> kingPseudoLegalMoves(Board board){
 
         char kingChar = board.getSideToMove() == 'w' ? 'K' : 'k';
 
         //only one king square so list not really needed, but it means I can reuse the existing findPieceSquare function
         List<Integer> kingSquare = findPieceSquares(board, kingChar);
 
-        List<int[]> kingPseudoLegalMoves = new ArrayList<>();
+        List<Move> kingPseudoLegalMoves = new ArrayList<>();
 
         for (Integer square : kingSquare){
             for (int moveOption : SLIDING_MOVE_VALUE) {
@@ -246,7 +256,9 @@ public class Moves {
 
                     //if the take is valid then add to moves
                     if (checkEndSquareColour(board.getSquares(), board.getSideToMove(), endSquare)) {
-                        int[] move = {square, endSquare};
+
+                        Move move = new Move(square, endSquare, kingChar,
+                                board.getSquares()[endSquare], false);
                         kingPseudoLegalMoves.add(move);
                     }
                 }
@@ -258,23 +270,23 @@ public class Moves {
 
     //kind of a weird way to do this, but it was quite easy to reuse the current pseudo-legal move function
     //just changes the current player - finds moves then changes back.
-    public static List<int[]> opponentPseudoLegalMoves(Board board){
+    public static List<Move> opponentPseudoLegalMoves(Board board){
 
         char playerChar = board.getSideToMove();
         char opponentChar = board.getSideToMove() == 'w' ? 'b' : 'w';
 
         board.setSideToMove(opponentChar);
 
-        List<int[]> opponentPseudoLegalMoves = allPseudoLegalMoves(board);
+        List<Move> opponentPseudoLegalMoves = allPseudoLegalMoves(board);
 
         board.setSideToMove(playerChar);
 
         return opponentPseudoLegalMoves;
     }
 
-    public static List<int[]> allPseudoLegalMoves(Board board){
+    public static List<Move> allPseudoLegalMoves(Board board){
 
-        List<int[]> pseudoLegalMoves = new ArrayList<>();
+        List<Move> pseudoLegalMoves = new ArrayList<>();
 
         pseudoLegalMoves.addAll(allSlidingPiecePseudoLegalMoves(board));
         pseudoLegalMoves.addAll(pawnPseudoLegalMoves(board));
