@@ -321,4 +321,6 @@ public class Moves {
             return !Character.isLowerCase(squares[squareIndex]) || squares[squareIndex] == 0;
         }
     }
+
+    // TODO: 30/09/2023 need to add pseudo legal move for castling
 }

@@ -290,6 +290,8 @@ public class Board {
     //this just move piece ignoring all else - iterate through all pseudo moves to check
     public boolean doMove(int[] move){
 
+        //need to figure out en passant and castling
+
         int startSquare = move[0];
         int endSquare = move[1];
 
@@ -299,6 +301,8 @@ public class Board {
         return false;
     }
 
+
+
     public List<int[]> boardLegalMoves(){
 
         List<int[]> legalMoves = new ArrayList<>();
@@ -307,12 +311,19 @@ public class Board {
 
         //do and undo each move
         for (int[] move : allPseudoLegalMoves){
+
+            char captureSquareChar = squares[move[1]];
+
             int[] reverseMove = {move[1], move[0]};
+
             doMove(move);
             if (!isCurrentPlayerInCheck()){
                 legalMoves.add(move);
             }
             doMove(reverseMove);
+
+            //restore piece if taken
+            squares[move[1]] = captureSquareChar;
         }
 
         return legalMoves;
