@@ -11,30 +11,25 @@ public class Main {
     public static void main(String[] args) {
 
 
-        Board board = new Board(enPassantFen);
-        //board.createGameBoard(enPassantFen);
-        System.out.println(board);
+        Board board = new Board(startingFen);
 
-
-        //List<Move> moves = board.boardLegalMoves();
-
-        List<Move> moves = PseudoMoves.allPseudoLegalMoves(board);
+        List<Move> moves = board.boardLegalMoves();
+        //List<Move> pseudomoves = PseudoMoves.allPseudoLegalMoves(board);
         for (Move move : moves){
             System.out.println(move);
         }
 
-
         System.out.println("************************************");
         board.prettyPrintBoard();
 
+        /*
         Move enPassantTestMove =  new Move(36,43, 'p', 'P' , true);
         board.doMove(enPassantTestMove);
         board.prettyPrintBoard();
 
         board.undoMove(enPassantTestMove);
         board.prettyPrintBoard();
+        */
 
-       // board.doMove(new int[]{36,43});
-        //board.prettyPrintBoard();
     }
 }

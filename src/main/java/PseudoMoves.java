@@ -180,13 +180,14 @@ public class PseudoMoves {
                 //check if it is the first time this pawn is moving
                 //removes this from the generate move function as the squares for the starting pawn rank is hard to
                 //calculate
-                if (pieceSquare < 56 && pieceSquare > 47 && (board.getSquares()[pieceSquare - 16] != 0)){
+
+                if (pieceSquare < 56 && pieceSquare > 47 && (board.getSquares()[pieceSquare - 16] == 0)){
                     pieceMoveOptions.add(-16);
                 }
                 generatePawnMoves(board, pieceSquare, pieceMoveOptions, dir);
             } else {
 
-                if (pieceSquare < 16 && pieceSquare > 7 && (board.getSquares()[pieceSquare + 16] != 0)){
+                if (pieceSquare < 16 && pieceSquare > 7 && (board.getSquares()[pieceSquare + 16] == 0)){
                     pieceMoveOptions.add(16);
                 }
                 generatePawnMoves(board, pieceSquare, pieceMoveOptions, dir);
