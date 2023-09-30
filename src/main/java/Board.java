@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -283,7 +284,37 @@ public class Board {
                 inCheck = true;
             }
         }
-
         return inCheck;
+    }
+
+    //this just move piece ignoring all else - iterate through all pseudo moves to check
+    public boolean doMove(int[] move){
+
+        int startSquare = move[0];
+        int endSquare = move[1];
+
+        squares[endSquare] = squares[startSquare];
+        squares[startSquare] = 0;
+
+        return false;
+    }
+
+    public List<int[]> boardLegalMoves(){
+
+        List<int[]> legalMoves = new ArrayList<>();
+
+        List<int[]> allPseudoLegalMoves = Moves.allPseudoLegalMoves(this);
+
+        //do and undo each move
+        for (int[] move : allPseudoLegalMoves){
+            int[] reverseMove = {move[1], move[0]};
+            doMove(move);
+            if (!isCurrentPlayerInCheck()){
+                legalMoves.add(move);
+            }
+            doMove(reverseMove);
+        }
+
+        return legalMoves;
     }
 }

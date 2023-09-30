@@ -20,6 +20,7 @@ public class Main {
         //List<int[]> moves =  Moves.kingPseudoLegalMoves(board);
         //List<int[]> moves = Moves.pawnPseudoLegalMoves(board);
 
+        /*
         List<int[]> moves= Moves.allPseudoLegalMoves(board);
         //List<int[]> moves = Moves.opponentPseudoLegalMoves(board);
 
@@ -34,5 +35,17 @@ public class Main {
 
         System.out.println("***********************************");
         System.out.println(board.isCurrentPlayerInCheck());
+
+         */
+
+        System.out.println("************************************");
+        board.prettyPrintBoard();
+
+
+        List<int[]> moves = board.boardLegalMoves();
+
+        for (int[] move : moves){
+            System.out.println(Arrays.toString(move));
+        }
     }
 }
