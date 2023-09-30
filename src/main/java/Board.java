@@ -290,11 +290,18 @@ public class Board {
     //this just move piece ignoring all else - iterate through all pseudo moves to check
     public boolean doMove(int[] move){
 
-        //need to figure out en passant and castling
-
         int startSquare = move[0];
         int endSquare = move[1];
 
+        if (squares[move[1]] == enPassantTargetSquare && Character.toLowerCase(squares[move[0]]) == 'p'){
+            int dir = sideToMove == 'w' ? 1 : -1;
+            int oldPawnSquare = enPassantTargetSquare + (dir * 8);
+
+            System.out.println(oldPawnSquare);
+            squares[oldPawnSquare] = 0;
+            squares[endSquare] = squares[startSquare];
+            squares[startSquare] = 0;
+        }
         squares[endSquare] = squares[startSquare];
         squares[startSquare] = 0;
 
@@ -313,17 +320,30 @@ public class Board {
         for (int[] move : allPseudoLegalMoves){
 
             char captureSquareChar = squares[move[1]];
-
             int[] reverseMove = {move[1], move[0]};
 
-            doMove(move);
-            if (!isCurrentPlayerInCheck()){
-                legalMoves.add(move);
+            if (squares[move[1]] == enPassantTargetSquare && Character.toLowerCase(squares[move[0]]) == 'p'){
+                //if piece is a pawn and going to the en passant square
+                System.out.println("THIS IS WORKING");
+                char enPassantPiece = squares[enPassantTargetSquare];
+                int dir = sideToMove == 'w' ? 1 : -1;
+                int oldPawnSquare = enPassantTargetSquare + (dir * 8);
+                doMove(move);
+                squares[oldPawnSquare] = 0;
+                if (!isCurrentPlayerInCheck()){
+                    legalMoves.add(move);
+                }
+                doMove(reverseMove);
+                squares[oldPawnSquare] = enPassantPiece;
+            } else {
+                doMove(move);
+                if (!isCurrentPlayerInCheck()){
+                    legalMoves.add(move);
+                }
+                doMove(reverseMove);
+                //restore piece if taken
+                squares[move[1]] = captureSquareChar;
             }
-            doMove(reverseMove);
-
-            //restore piece if taken
-            squares[move[1]] = captureSquareChar;
         }
 
         return legalMoves;
