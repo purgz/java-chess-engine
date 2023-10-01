@@ -6,17 +6,29 @@ public class Main {
     private static final String startingFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     private static final String testFen = "8/ppp5/2k5/8/8/8/5KPP/8 w - - 0 1";
     private static final String enPassantFen = "4k3/8/8/8/3Pp3/8/8/4K3 b KQkq d3 0 1";
-    private static final String testFen2 = "8/8/8/q2RK3/8/8/8/8 w - - 0 1";
+    private static final String testFen2 = "k7/8/8/8/8/8/rr6/7K b - - 0 1";
 
     public static void main(String[] args) {
 
 
+        long startTime;
+        long endTime;
+
        // Board board = new Board(startingFen);
-        Board board = new Board();
+        Board board = new Board(testFen2);
         System.out.println("************************************");
-      //  board.prettyPrintBoard();
 
 
+        startTime = System.nanoTime();
+        board.prettyPrintBoard();
+        System.out.println("IS THIS CHECKMATE : " + board.checkMate());
+
+        boolean move = board.doLegalMove(new int[] {Util.convertSquarePosToBoardIndex("b2"), Util.convertSquarePosToBoardIndex("b1")});
+        board.prettyPrintBoard();
+        System.out.println("IS THIS CHECKMATE : " + board.checkMate());
+
+
+        /*
         int[] move1 = new int[] {Util.convertSquarePosToBoardIndex("a2"), Util.convertSquarePosToBoardIndex("a4")};
         board.doLegalMove(move1);
         System.out.println("************************************");
@@ -46,8 +58,13 @@ public class Main {
         board.prettyPrintBoard();
         System.out.println(board.convertBoardToFEN());
         System.out.println(board.getEnPassantTargetSquare());
-        System.out.println(Util.convertBoardIndexToSquare(board.getEnPassantTargetSquare()));
+        */
 
+        endTime = System.nanoTime();
+
+        double time = (double) (endTime - startTime) / 1000000;
+
+        System.out.println("EXECUTION TIME " + time);
 
         // TODO: 01/10/2023 ADD castling
         // TODO: 01/10/2023 ADD CHECKMATE

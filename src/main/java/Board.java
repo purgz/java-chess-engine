@@ -375,10 +375,13 @@ public class Board {
         for (Move move : allPseudoLegalMoves){
 
             doMove(move);
-
+            // FIXME: 01/10/2023 when checking if in check here, it is evaluating the wrong person since domove alternates the player
+            //fixed by double alternating the player colour around the is current player in check
+            sideToMove = sideToMove == 'w' ? 'b' : 'w';
             if (!isCurrentPlayerInCheck()){
                 legalMoves.add(move);
             }
+            sideToMove = sideToMove == 'w' ? 'b' : 'w';
             //restore position and remove move from stack
             undoMove(move);
 
@@ -386,5 +389,13 @@ public class Board {
         }
 
         return legalMoves;
+    }
+
+    public boolean checkMate(){
+        if (boardLegalMoves().size() == 0){
+            return true;
+        }
+
+        return false;
     }
 }
