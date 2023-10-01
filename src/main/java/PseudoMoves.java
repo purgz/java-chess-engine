@@ -56,7 +56,7 @@ public class PseudoMoves {
                     if (checkEndSquareColour(board.getSquares(), colourToCalculate, endSquare)){
 
                         Move move = new Move(knightSquare, endSquare, knightChar,
-                                board.getSquares()[endSquare],false );
+                                board.getSquares()[endSquare],false , board.getEnPassantTargetSquare());
                         allKnightPseudoLegalMoves.add(move);
                     }
                 }
@@ -136,7 +136,7 @@ public class PseudoMoves {
                         //if the take is valid then add to moves
                         if (checkEndSquareColour(board.getSquares(), colour, endSquare)){
                             Move move = new Move(pieceSquare, endSquare,
-                                    board.getSquares()[pieceSquare],board.getSquares()[endSquare], false);
+                                    board.getSquares()[pieceSquare],board.getSquares()[endSquare], false, board.getEnPassantTargetSquare());
                             slidingPiecePseudoLegalMoves.add(move);
                         }
 
@@ -207,7 +207,7 @@ public class PseudoMoves {
                         capturedPiece = board.getSquares()[endSquare];
                     }
                     Move move = new Move(pieceSquare, endSquare, pawnChar,
-                            capturedPiece, isEnPassant);
+                            capturedPiece, isEnPassant, board.getEnPassantTargetSquare());
                     pawnPseudoLegalMoves.add(move);
                 }
             }
@@ -263,7 +263,7 @@ public class PseudoMoves {
                     if (checkEndSquareColour(board.getSquares(), board.getSideToMove(), endSquare)) {
 
                         Move move = new Move(square, endSquare, kingChar,
-                                board.getSquares()[endSquare], false);
+                                board.getSquares()[endSquare], false, board.getEnPassantTargetSquare());
                         kingPseudoLegalMoves.add(move);
                     }
                 }

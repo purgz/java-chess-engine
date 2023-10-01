@@ -5,13 +5,23 @@ public class Move {
     private char piece;
     private char capturedPiece;
     private boolean isEnPassant;
+    private int enPassantTargetSquare;
 
-    public Move(int startSquare, int endSquare, char piece, char capturedPiece, boolean isEnPassant){
+    public Move(int startSquare, int endSquare, char piece, char capturedPiece, boolean isEnPassant, int enPassantTargetSquare){
         this.startSquare = startSquare;
         this.endSquare = endSquare;
         this.piece = piece;
         this.capturedPiece = capturedPiece;
         this.isEnPassant = isEnPassant;
+        this.enPassantTargetSquare = enPassantTargetSquare;
+    }
+
+    public int getEnPassantTargetSquare() {
+        return enPassantTargetSquare;
+    }
+
+    public void setEnPassantTargetSquare(int enPassantTargetSquare) {
+        this.enPassantTargetSquare = enPassantTargetSquare;
     }
 
     @Override
@@ -46,6 +56,7 @@ public class Move {
                 ", piece=" + piece +
                 ", capturedPiece=" + capturedPiece +
                 ", isEnPassant=" + isEnPassant +
+                ", enPassantTargetSquare=" + enPassantTargetSquare +
                 '}';
     }
 

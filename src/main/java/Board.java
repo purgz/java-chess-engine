@@ -310,6 +310,8 @@ public class Board {
         return false;
     }
 
+    // TODO: 01/10/2023 update en passant square when a legal move is made
+    //can add en passant target square to move object to keep track when undoing moves.
     public boolean doLegalMove(int[] move){
         List<Move> legalMoves = boardLegalMoves();
 

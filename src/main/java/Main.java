@@ -25,7 +25,7 @@ public class Main {
         System.out.println("************************************");
         board.prettyPrintBoard();
 
-        Move enPassantTestMove =  new Move(36,43, 'p', 'P' , true);
+        Move enPassantTestMove =  new Move(36,43, 'p', 'P' , true, board.getEnPassantTargetSquare());
 
       //  List<Move> legalMoves = board.boardLegalMoves();
         //System.out.println("LEGAL MOVES" + legalMoves);
