@@ -5,6 +5,8 @@ import java.util.Stack;
 
 public class Board {
 
+    private static final String startingFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
     private String boardStartingFen;
 
     private final char[] squares = new char[64];
@@ -20,9 +22,6 @@ public class Board {
     private int enPassantTargetSquare;
 
     public Stack<Move> moveStack = new Stack<>();
-
-    //no args constructor if wanting to manually call the methods to set board
-    public Board(){}
 
     public String getBoardStartingFen() {
         return boardStartingFen;
@@ -89,6 +88,10 @@ public class Board {
 
         this.boardStartingFen = fen;
         createGameBoard(fen);
+    }
+
+    public Board(){
+        createGameBoard(startingFen);
     }
 
     private void createGameBoard(String fen){
@@ -315,19 +318,18 @@ public class Board {
         }
 
         moveStack.push(move);
-
+        //alternate side
+        sideToMove = sideToMove == 'w' ? 'b' : 'w';
         return false;
     }
 
-    // TODO: 01/10/2023 update en passant square when a legal move is made
-    //can add en passant target square to move object to keep track when undoing moves.
+
     public boolean doLegalMove(int[] move){
         List<Move> legalMoves = boardLegalMoves();
 
         for (Move legalMove : legalMoves){
             if (legalMove.equals(move)){
                 doMove(legalMove);
-
                 return true;
             }
         }
@@ -354,6 +356,8 @@ public class Board {
         } else {
             enPassantTargetSquare = -1;
         }
+        //alternate side
+        sideToMove = sideToMove == 'w' ? 'b' : 'w';
         return false;
     }
 

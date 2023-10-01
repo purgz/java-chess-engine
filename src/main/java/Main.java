@@ -11,7 +11,8 @@ public class Main {
     public static void main(String[] args) {
 
 
-        Board board = new Board(startingFen);
+       // Board board = new Board(startingFen);
+        Board board = new Board();
         System.out.println("************************************");
       //  board.prettyPrintBoard();
 
@@ -25,13 +26,20 @@ public class Main {
         System.out.println(Util.convertBoardIndexToSquare(board.getEnPassantTargetSquare()));
         System.out.println(board.moveStack);
 
-        int[] move2 = new int[] {Util.convertSquarePosToBoardIndex("b1"), Util.convertSquarePosToBoardIndex("c3")};
+        int[] move2 = new int[] {Util.convertSquarePosToBoardIndex("a7"), Util.convertSquarePosToBoardIndex("a5")};
         board.doLegalMove(move2);
         System.out.println("************************************");
         board.prettyPrintBoard();
         System.out.println(board.convertBoardToFEN());
 
+        int[] move3 = new int[] {Util.convertSquarePosToBoardIndex("a1"), Util.convertSquarePosToBoardIndex("a3")};
+        board.doLegalMove(move3);
+        System.out.println("************************************");
+        board.prettyPrintBoard();
+        System.out.println(board.convertBoardToFEN());
 
+
+        board.undoLastMove();
         board.undoLastMove();
         board.undoLastMove();
         System.out.println("************************************");
