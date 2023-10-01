@@ -11,11 +11,11 @@ public class Main {
     public static void main(String[] args) {
 
 
-        Board board = new Board(enPassantFen);
+        Board board = new Board(startingFen);
         System.out.println("************************************");
-        board.prettyPrintBoard();
+      //  board.prettyPrintBoard();
 
-        /*
+
         int[] move1 = new int[] {Util.convertSquarePosToBoardIndex("a2"), Util.convertSquarePosToBoardIndex("a4")};
         board.doLegalMove(move1);
         System.out.println("************************************");
@@ -23,6 +23,7 @@ public class Main {
         System.out.println(board.convertBoardToFEN());
         System.out.println(board.getEnPassantTargetSquare());
         System.out.println(Util.convertBoardIndexToSquare(board.getEnPassantTargetSquare()));
+        System.out.println(board.moveStack);
 
         int[] move2 = new int[] {Util.convertSquarePosToBoardIndex("b1"), Util.convertSquarePosToBoardIndex("c3")};
         board.doLegalMove(move2);
@@ -30,8 +31,20 @@ public class Main {
         board.prettyPrintBoard();
         System.out.println(board.convertBoardToFEN());
 
-         */
 
+        board.undoLastMove();
+        board.undoLastMove();
+        System.out.println("************************************");
+        board.prettyPrintBoard();
+        System.out.println(board.convertBoardToFEN());
+        System.out.println(board.getEnPassantTargetSquare());
+        System.out.println(Util.convertBoardIndexToSquare(board.getEnPassantTargetSquare()));
+
+
+
+
+
+        /*
        Move enPassantTestMove =  new Move(36,43, 'p', 'P' , true, board.getEnPassantTargetSquare(), false);
 
 
@@ -48,7 +61,7 @@ public class Main {
 
 
        System.out.println(board.moveStack);
-
+    */
 
     }
 }

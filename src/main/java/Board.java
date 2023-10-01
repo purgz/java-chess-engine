@@ -349,6 +349,11 @@ public class Board {
         }
 
         moveStack.pop();
+        if (moveStack.size() != 0){
+            enPassantTargetSquare = moveStack.peek().getEnPassantTargetSquare();
+        } else {
+            enPassantTargetSquare = -1;
+        }
         return false;
     }
 
