@@ -6,14 +6,24 @@ public class Move {
     private char capturedPiece;
     private boolean isEnPassant;
     private int enPassantTargetSquare;
+    boolean isDoublePawnMove;
 
-    public Move(int startSquare, int endSquare, char piece, char capturedPiece, boolean isEnPassant, int enPassantTargetSquare){
+    public boolean isDoublePawnMove() {
+        return isDoublePawnMove;
+    }
+
+    public void setDoublePawnMove(boolean doublePawnMove) {
+        isDoublePawnMove = doublePawnMove;
+    }
+
+    public Move(int startSquare, int endSquare, char piece, char capturedPiece, boolean isEnPassant, int enPassantTargetSquare, boolean isDoublePawnMove){
         this.startSquare = startSquare;
         this.endSquare = endSquare;
         this.piece = piece;
         this.capturedPiece = capturedPiece;
         this.isEnPassant = isEnPassant;
         this.enPassantTargetSquare = enPassantTargetSquare;
+        this.isDoublePawnMove = isDoublePawnMove;
     }
 
     public int getEnPassantTargetSquare() {
@@ -57,6 +67,7 @@ public class Move {
                 ", capturedPiece=" + capturedPiece +
                 ", isEnPassant=" + isEnPassant +
                 ", enPassantTargetSquare=" + enPassantTargetSquare +
+                ", isDoublePawnMove=" + isDoublePawnMove +
                 '}';
     }
 

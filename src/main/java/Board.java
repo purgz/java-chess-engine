@@ -295,9 +295,9 @@ public class Board {
 
         int startSquare = move.getStartSquare();
         int endSquare = move.getEndSquare();
-
+        int dir = sideToMove == 'w' ? 1 : -1;
         if (move.isEnPassant()){
-            int dir = sideToMove == 'w' ? 1 : -1;
+
             squares[move.getStartSquare()] = 0;
             squares[move.getEndSquare()] = move.getPiece();
             squares[move.getEndSquare() + dir * 8] = 0;
@@ -305,6 +305,15 @@ public class Board {
             squares[endSquare] = squares[startSquare];
             squares[startSquare] = 0;
         }
+
+        if (move.isDoublePawnMove()){
+            enPassantTargetSquare = startSquare - dir * 8;
+            move.setEnPassantTargetSquare(enPassantTargetSquare);
+        } else {
+            enPassantTargetSquare = -1;
+            move.setEnPassantTargetSquare(-1);
+        }
+
         moveStack.push(move);
 
         return false;

@@ -12,37 +12,42 @@ public class Main {
 
 
         Board board = new Board(enPassantFen);
-
-        /*
-        List<Move> moves = board.boardLegalMoves();
-        //List<Move> pseudomoves = PseudoMoves.allPseudoLegalMoves(board);
-        for (Move move : moves){
-            System.out.println(move);
-        }
-
-         */
-
         System.out.println("************************************");
         board.prettyPrintBoard();
 
-        Move enPassantTestMove =  new Move(36,43, 'p', 'P' , true, board.getEnPassantTargetSquare());
-
-      //  List<Move> legalMoves = board.boardLegalMoves();
-        //System.out.println("LEGAL MOVES" + legalMoves);
-        //System.out.println(legalMoves.contains(enPassantTestMove));
-
-        boolean moveWorked = board.doLegalMove(new int[] {36,43});
-
+        /*
+        int[] move1 = new int[] {Util.convertSquarePosToBoardIndex("a2"), Util.convertSquarePosToBoardIndex("a4")};
+        board.doLegalMove(move1);
+        System.out.println("************************************");
         board.prettyPrintBoard();
-        System.out.println(board.moveStack);
+        System.out.println(board.convertBoardToFEN());
+        System.out.println(board.getEnPassantTargetSquare());
+        System.out.println(Util.convertBoardIndexToSquare(board.getEnPassantTargetSquare()));
 
-        if (moveWorked){
-            board.undoLastMove();
-            board.prettyPrintBoard();
-        }
+        int[] move2 = new int[] {Util.convertSquarePosToBoardIndex("b1"), Util.convertSquarePosToBoardIndex("c3")};
+        board.doLegalMove(move2);
+        System.out.println("************************************");
+        board.prettyPrintBoard();
+        System.out.println(board.convertBoardToFEN());
+
+         */
+
+       Move enPassantTestMove =  new Move(36,43, 'p', 'P' , true, board.getEnPassantTargetSquare(), false);
 
 
-        System.out.println(board.moveStack);
+
+       boolean moveWorked = board.doLegalMove(new int[] {36,43});
+
+       board.prettyPrintBoard();
+       System.out.println(board.moveStack);
+
+       if (moveWorked){
+           board.undoLastMove();
+           board.prettyPrintBoard();
+       }
+
+
+       System.out.println(board.moveStack);
 
 
     }
