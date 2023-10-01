@@ -16,6 +16,17 @@ public class Move {
 
     @Override
     public boolean equals(Object obj){
+
+        //allows a user to pass either a full move object or a int[] move to the do move method.
+        if (obj instanceof int[]){
+
+            int[] move = (int[]) obj;
+            if (move[0] == startSquare && move[1] == endSquare){
+                return true;
+            } else {
+                return false;
+            }
+        }
         Move move = (Move) obj;
         if (startSquare == move.getStartSquare() &&
                 endSquare == move.getEndSquare() &&

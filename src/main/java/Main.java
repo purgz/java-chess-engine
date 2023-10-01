@@ -31,7 +31,8 @@ public class Main {
         //System.out.println("LEGAL MOVES" + legalMoves);
         //System.out.println(legalMoves.contains(enPassantTestMove));
 
-        boolean moveWorked = board.doLegalMove(enPassantTestMove);
+        boolean moveWorked = board.doLegalMove(new int[] {36,43});
+
         board.prettyPrintBoard();
         System.out.println(board.moveStack);
 

@@ -310,11 +310,17 @@ public class Board {
         return false;
     }
 
-    public boolean doLegalMove(Move move){
-        if (boardLegalMoves().contains(move)){
-            doMove(move);
-            return true;
+    public boolean doLegalMove(int[] move){
+        List<Move> legalMoves = boardLegalMoves();
+
+        for (Move legalMove : legalMoves){
+            if (legalMove.equals(move)){
+                doMove(legalMove);
+
+                return true;
+            }
         }
+
         return false;
     }
 
