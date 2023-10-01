@@ -49,8 +49,8 @@ public class Main {
         System.out.println(Util.convertBoardIndexToSquare(board.getEnPassantTargetSquare()));
 
 
-
-
+        // TODO: 01/10/2023 ADD castling
+        // TODO: 01/10/2023 ADD CHECKMATE
 
         /*
        Move enPassantTestMove =  new Move(36,43, 'p', 'P' , true, board.getEnPassantTargetSquare(), false);
