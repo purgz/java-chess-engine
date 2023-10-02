@@ -68,7 +68,7 @@ public class Main {
 
         // TODO: 01/10/2023 ADD castling
         // TODO: 01/10/2023 ADD CHECKMATE
-
+        // TODO: 01/10/2023 ADD PROPER UNIT TESTS INSTEAD OF ALL OF THIS !!!! 
         /*
        Move enPassantTestMove =  new Move(36,43, 'p', 'P' , true, board.getEnPassantTargetSquare(), false);
 
