@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
@@ -14,79 +15,41 @@ public class Main {
         long startTime;
         long endTime;
 
-       // Board board = new Board(startingFen);
-        Board board = new Board(testFen2);
         System.out.println("************************************");
-
-
         startTime = System.nanoTime();
-        board.prettyPrintBoard();
-        System.out.println("IS THIS CHECKMATE : " + board.checkMate());
 
-        boolean move = board.doLegalMove(new int[] {Util.convertSquarePosToBoardIndex("b2"), Util.convertSquarePosToBoardIndex("b1")});
-        board.prettyPrintBoard();
-        System.out.println("IS THIS CHECKMATE : " + board.checkMate());
-
-
-        /*
-        int[] move1 = new int[] {Util.convertSquarePosToBoardIndex("a2"), Util.convertSquarePosToBoardIndex("a4")};
-        board.doLegalMove(move1);
-        System.out.println("************************************");
-        board.prettyPrintBoard();
-        System.out.println(board.convertBoardToFEN());
-        System.out.println(board.getEnPassantTargetSquare());
-        System.out.println(Util.convertBoardIndexToSquare(board.getEnPassantTargetSquare()));
-        System.out.println(board.moveStack);
-
-        int[] move2 = new int[] {Util.convertSquarePosToBoardIndex("a7"), Util.convertSquarePosToBoardIndex("a5")};
-        board.doLegalMove(move2);
-        System.out.println("************************************");
-        board.prettyPrintBoard();
-        System.out.println(board.convertBoardToFEN());
-
-        int[] move3 = new int[] {Util.convertSquarePosToBoardIndex("a1"), Util.convertSquarePosToBoardIndex("a3")};
-        board.doLegalMove(move3);
-        System.out.println("************************************");
-        board.prettyPrintBoard();
-        System.out.println(board.convertBoardToFEN());
-
-
-        board.undoLastMove();
-        board.undoLastMove();
-        board.undoLastMove();
-        System.out.println("************************************");
-        board.prettyPrintBoard();
-        System.out.println(board.convertBoardToFEN());
-        System.out.println(board.getEnPassantTargetSquare());
-        */
-
+        playGameInConsole();
         endTime = System.nanoTime();
+        System.out.println("************************************");
 
         double time = (double) (endTime - startTime) / 1000000;
 
         System.out.println("EXECUTION TIME " + time);
 
         // TODO: 01/10/2023 ADD castling
-        // TODO: 01/10/2023 ADD CHECKMATE
-        // TODO: 01/10/2023 ADD PROPER UNIT TESTS INSTEAD OF ALL OF THIS !!!! 
-        /*
-       Move enPassantTestMove =  new Move(36,43, 'p', 'P' , true, board.getEnPassantTargetSquare(), false);
-
-
-
-       boolean moveWorked = board.doLegalMove(new int[] {36,43});
-
-       board.prettyPrintBoard();
-       System.out.println(board.moveStack);
-
-       if (moveWorked){
-           board.undoLastMove();
-           board.prettyPrintBoard();
-       }
-
-
-       System.out.println(board.moveStack);
-    */
-
     }
+
+    public static void playGameInConsole(){
+
+        Scanner scanner = new Scanner(System.in);
+        Board board = new Board();
+
+        while (!board.checkMate()){
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            board.prettyPrintBoard();
+            System.out.println("ENTER NEXT MOVE e.g a2a3");
+            String moveString = scanner.nextLine();
+            int[] move = Util.convertMoveToBoardIndex(moveString);
+            //if the move is invalid then empty array is returned
+            if (move.length > 0){
+                //valid move
+                board.doLegalMove(move);
+            }
+        }
+
+        System.out.println("CHECKMATE " + board.getSideToMove() + " loses");
+    }
+
+
 }
