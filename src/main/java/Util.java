@@ -11,6 +11,10 @@ public class Util {
     //converts chess square such as e2 to an index in the board array
     public static int convertSquarePosToBoardIndex(String square){
 
+        if (square.length() != 2){
+            return -1;
+        }
+
         char fileChar = square.charAt(0);
         char rankChar = square.charAt(1);
 
@@ -21,7 +25,27 @@ public class Util {
         // 8 - num as the board works from top to bottom
         int rank = 8 - (rankChar - '0');
 
-        return (rank * 8) + file;
+        int result = (rank * 8) + file;
+
+        if (result > 63 || result < 0){
+            return -1;
+        }
+
+        return result;
+    }
+
+    //format move startsquareEndsquare e.g e2e4
+    public static int[] convertMoveToBoardIndex(String move){
+
+        move.substring(0,1);
+        int start = convertSquarePosToBoardIndex(move.substring(0,2));
+        int end = convertSquarePosToBoardIndex(move.substring(2,4));
+
+        if (start == -1 || end == -1){
+            return new int[] {};
+        }
+
+        return new int[] {start,end};
     }
 
     public static String convertBoardIndexToSquare(int index){
