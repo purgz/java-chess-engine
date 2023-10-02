@@ -298,12 +298,13 @@ public class Board {
 
         int startSquare = move.getStartSquare();
         int endSquare = move.getEndSquare();
+
         int dir = sideToMove == 'w' ? 1 : -1;
         if (move.isEnPassant()){
 
-            squares[move.getStartSquare()] = 0;
-            squares[move.getEndSquare()] = move.getPiece();
-            squares[move.getEndSquare() + dir * 8] = 0;
+            squares[endSquare] = squares[startSquare];
+            squares[startSquare] = 0;
+            squares[endSquare + dir * 8] = 0;
         } else {
             squares[endSquare] = squares[startSquare];
             squares[startSquare] = 0;
@@ -314,7 +315,7 @@ public class Board {
             move.setEnPassantTargetSquare(enPassantTargetSquare);
         } else {
             enPassantTargetSquare = -1;
-            move.setEnPassantTargetSquare(-1);
+            move.setEnPassantTargetSquare(enPassantTargetSquare);
         }
 
         moveStack.push(move);
@@ -325,6 +326,7 @@ public class Board {
 
 
     public boolean doLegalMove(int[] move){
+
         List<Move> legalMoves = boardLegalMoves();
 
         for (Move legalMove : legalMoves){
@@ -344,7 +346,8 @@ public class Board {
             int dir = sideToMove == 'w' ? 1 : -1;
             squares[move.getStartSquare()] = move.getPiece();
             squares[move.getEndSquare()] = 0;
-            squares[move.getEndSquare() + dir * 8] = move.getCapturedPiece();
+            squares[move.getEndSquare() - dir * 8] = move.getCapturedPiece();
+
         } else {
             squares[move.getEndSquare()] = move.getCapturedPiece();
             squares[move.getStartSquare()] = move.getPiece();
@@ -352,6 +355,7 @@ public class Board {
 
         moveStack.pop();
         if (moveStack.size() != 0){
+
             enPassantTargetSquare = moveStack.peek().getEnPassantTargetSquare();
         } else {
             enPassantTargetSquare = -1;
@@ -362,7 +366,9 @@ public class Board {
     }
 
     public void undoLastMove(){
-        undoMove(moveStack.peek());
+        if (moveStack.size() != 0){
+            undoMove(moveStack.peek());
+        }
     }
 
     public List<Move> boardLegalMoves(){
@@ -375,8 +381,7 @@ public class Board {
         for (Move move : allPseudoLegalMoves){
 
             doMove(move);
-            // FIXME: 01/10/2023 when checking if in check here, it is evaluating the wrong person since domove alternates the player
-            //fixed by double alternating the player colour around the is current player in check
+
             sideToMove = sideToMove == 'w' ? 'b' : 'w';
             if (!isCurrentPlayerInCheck()){
                 legalMoves.add(move);

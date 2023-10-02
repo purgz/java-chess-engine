@@ -32,14 +32,19 @@ public class Main {
     public static void playGameInConsole(){
 
         Scanner scanner = new Scanner(System.in);
-        Board board = new Board();
-
+        Board board = new Board(startingFen);
         while (!board.checkMate()){
             System.out.print("\033[H\033[2J");
             System.out.flush();
             board.prettyPrintBoard();
-            System.out.println("ENTER NEXT MOVE e.g a2a3");
+            System.out.println(board.convertBoardToFEN());
             String moveString = scanner.nextLine();
+
+            if (moveString.equals("undo")){
+                board.undoLastMove();
+                continue;
+            }
+
             int[] move = Util.convertMoveToBoardIndex(moveString);
             //if the move is invalid then empty array is returned
             if (move.length > 0){
@@ -47,7 +52,7 @@ public class Main {
                 board.doLegalMove(move);
             }
         }
-
+        board.prettyPrintBoard();
         System.out.println("CHECKMATE " + board.getSideToMove() + " loses");
     }
 

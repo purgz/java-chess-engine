@@ -210,6 +210,7 @@ public class PseudoMoves {
                     if (moveOption == 16 || moveOption == -16){
                         isDoublePawnMove = true;
                     }
+
                     Move move = new Move(pieceSquare, endSquare, pawnChar,
                             capturedPiece, isEnPassant, board.getEnPassantTargetSquare(), isDoublePawnMove);
                     pawnPseudoLegalMoves.add(move);
