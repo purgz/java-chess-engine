@@ -299,16 +299,12 @@ public class PseudoMoves {
         List<Integer> enemyAttackSquares = opponentPseudoLegalMoves.stream().map(Move::getEndSquare).toList();
 
         /*
-            -- check castling rights
-            -- can probably hard code the squares since the kings and rooks have to be on their starting squares
             -- if a king move - all castling rights are removed
             -- if a rook moves - only that side is removed
             -- if a rook is taken then remove castling right - or just check that the rook is on its starting square
-
-            -- need to add isCastle flag to the Move object so that you can undo a castle move
-            -- maybe isQueenCastle or isKingCastle instead of above - then can replace pieces depending on the colour
          */
 
+        //checks each castling right individually, could probably refactor black and white into one method but this works...
         if (board.getSideToMove() == 'w'){
 
             if (enemyAttackSquares.contains(whiteKing)){
@@ -316,19 +312,11 @@ public class PseudoMoves {
             }
 
             if (board.isWhiteKingCastle()){
+
+                //pass king piece
                 if (!(enemyAttackSquares.contains(whiteKing + 1) || enemyAttackSquares.contains(whiteKing + 2))){
-                    if (board.getSquares()[whiteKing+1] == 0 &&
-                            board.getSquares()[whiteKing + 2] == 0){
-                        //then can castle kingside
-                        Move move = new Move(whiteKing,
-                                whiteKing + 2,
-                                'K',
-                                board.getSquares()[whiteKing+2],
-                                false,
-                                board.getEnPassantTargetSquare(),
-                                false,
-                                true,
-                                false);
+                    Move move = createCastleMove(whiteKing, board, true);
+                    if (move != null){
                         castleMoves.add(move);
                     }
                 }
@@ -336,7 +324,10 @@ public class PseudoMoves {
             }
             if(board.isWhiteQueenCastle()){
                 if (!(enemyAttackSquares.contains(whiteKing - 1) || enemyAttackSquares.contains(whiteKing - 2))){
-                    //then can castle kingside
+                    Move move = createCastleMove(whiteKing, board, false);
+                    if (move != null){
+                        castleMoves.add(move);
+                    }
                 }
             }
         } else {
@@ -347,17 +338,61 @@ public class PseudoMoves {
 
             if (board.isBlackKingCastle()){
                 if (!(enemyAttackSquares.contains(blackKing + 1) || enemyAttackSquares.contains(blackKing + 2))){
-                    //then can castle kingside
+                    Move move = createCastleMove(blackKing, board, true);
+                    if (move != null){
+                        castleMoves.add(move);
+                    }
                 }
             }
             if(board.isBlackQueenCastle()){
                 if (!(enemyAttackSquares.contains(blackKing - 1) || enemyAttackSquares.contains(blackKing - 2))){
-                    //then can castle kingside
+                    Move move = createCastleMove(blackKing, board, false);
+                    if (move != null){
+                        castleMoves.add(move);
+                    }
                 }
             }
         }
 
         return castleMoves;
+    }
+
+    //deals with creating a castle move for either kingside or queenside
+    public static Move createCastleMove(int kingPiece, Board board, boolean isKingSide){
+        char kingChar = board.getSquares()[kingPiece];
+        if (isKingSide){
+            if (board.getSquares()[kingPiece + 1] == 0 &&
+                    board.getSquares()[kingPiece + 2] == 0){
+                //then can castle kingside
+                Move move = new Move(kingPiece,
+                        kingPiece + 2,
+                        kingChar,
+                        board.getSquares()[kingPiece+2],
+                        false,
+                        board.getEnPassantTargetSquare(),
+                        false,
+                        true,
+                        false);
+                return move;
+            }
+            return null;
+        } else {
+            if (board.getSquares()[kingPiece - 1] == 0 &&
+                    board.getSquares()[kingPiece - 2] == 0 &&
+                    board.getSquares()[kingPiece - 3] == 0){
+                Move move = new Move(kingPiece,
+                        kingPiece - 2,
+                        kingChar,
+                        board.getSquares()[kingPiece - 2],
+                        false,
+                        board.getEnPassantTargetSquare(),
+                        false,
+                        false,
+                        true);
+                return move;
+            }
+            return null;
+        }
     }
 
     //kind of a weird way to do this, but it was quite easy to reuse the current pseudo-legal move function

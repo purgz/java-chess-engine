@@ -1,7 +1,9 @@
 import com.sun.source.tree.AssertTree;
 import org.junit.*;
+import org.junit.jupiter.api.DisplayName;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MoveTest {
@@ -64,22 +66,46 @@ public class MoveTest {
     }
 
     @Test
+    @DisplayName("Castling should work correctly")
     public void testCastling(){
 
         String fen = "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1";
-        Board castleBoard = new Board(fen);
+        String fen2 = "r3k2r/8/8/8/8/8/8/R3K2R b KQkq - 0 1";
+        String fen3 = "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1";
+        String fen4 = "r3k2r/8/8/8/8/7B/8/R3K2R b KQkq - 0 1";
 
-        Move whiteKingCastle = new Move (60, 62, 'K', (char) 0, false, castleBoard.getEnPassantTargetSquare(), false, true, false);
-        Move whiteQueenCastle = new Move (60, 58, 'K', (char) 0, false, castleBoard.getEnPassantTargetSquare(), false, false, true);
+        Board whiteCastleBoard = new Board(fen);
+        Board blackCastleBoard = new Board(fen2);
+        Board blackCastleBoard2 = new Board(fen4);
 
-        List<Move> castlingPseudoMoves = PseudoMoves.castlingPseudoLegalMoves(castleBoard);
+        Move whiteKingCastle = new Move (60, 62, 'K', (char) 0, false, whiteCastleBoard.getEnPassantTargetSquare(), false, true, false);
+        Move whiteQueenCastle = new Move (60, 58, 'K', (char) 0, false, whiteCastleBoard.getEnPassantTargetSquare(), false, false, true);
+
+        Move blackKingCastle = new Move (4, 6, 'k', (char) 0, false, blackCastleBoard.getEnPassantTargetSquare(), false, true, false);
+        Move blackQueenCastle = new Move (4, 2, 'k', (char) 0, false, blackCastleBoard.getEnPassantTargetSquare(), false, false, true);
+
+        List<Move> castlingPseudoMoves = PseudoMoves.castlingPseudoLegalMoves(whiteCastleBoard);
         List<Move> expected = new ArrayList<>();
         expected.add(whiteKingCastle);
-        //expected.add(whiteQueenCastle);
-        System.out.println(castlingPseudoMoves);
-        System.out.println(expected);
+        expected.add(whiteQueenCastle);
 
-        Assert.assertArrayEquals(castlingPseudoMoves.toArray(), expected.toArray());
+        List<Move> blackCastlingPseudoMoves = PseudoMoves.castlingPseudoLegalMoves(blackCastleBoard);
+        List<Move> expected2 = new ArrayList<>();
+        expected2.add(blackKingCastle);
+        expected2.add(blackQueenCastle);
+
+        //should have a piece blocking the queen side castle
+        List<Move> blackCastlingPseudoMoves2 = PseudoMoves.castlingPseudoLegalMoves(blackCastleBoard2);
+        System.out.println(blackCastlingPseudoMoves2);
+        List<Move> expected3 = new ArrayList<>();
+        expected3.add(blackKingCastle);
+
+        Assert.assertArrayEquals("Testing if white king castling pseudo legal moves are being found correctly", expected.toArray(), castlingPseudoMoves.toArray());
+        Assert.assertArrayEquals("Testing if black king castling pseudo legal moves are being found correctly", expected2.toArray(), blackCastlingPseudoMoves.toArray());
+        Assert.assertArrayEquals("Testing if a piece blocking the queen side castle", expected3.toArray(), blackCastlingPseudoMoves2.toArray());
+
+
+
     }
 
 
