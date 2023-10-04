@@ -18,7 +18,10 @@ public class Main {
         System.out.println("************************************");
         startTime = System.nanoTime();
 
-        playGameInConsole();
+        //playGameInConsole();
+        Board board = new Board();
+
+        PseudoMoves.castlingPseudoLegalMoves(board);
         endTime = System.nanoTime();
         System.out.println("************************************");
 

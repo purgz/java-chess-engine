@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PseudoMoves {
 
@@ -56,7 +57,7 @@ public class PseudoMoves {
                     if (checkEndSquareColour(board.getSquares(), colourToCalculate, endSquare)){
 
                         Move move = new Move(knightSquare, endSquare, knightChar,
-                                board.getSquares()[endSquare],false , board.getEnPassantTargetSquare(), false);
+                                board.getSquares()[endSquare],false , board.getEnPassantTargetSquare(), false, false, false);
                         allKnightPseudoLegalMoves.add(move);
                     }
                 }
@@ -136,7 +137,7 @@ public class PseudoMoves {
                         //if the take is valid then add to moves
                         if (checkEndSquareColour(board.getSquares(), colour, endSquare)){
                             Move move = new Move(pieceSquare, endSquare,
-                                    board.getSquares()[pieceSquare],board.getSquares()[endSquare], false, board.getEnPassantTargetSquare(), false);
+                                    board.getSquares()[pieceSquare],board.getSquares()[endSquare], false, board.getEnPassantTargetSquare(), false, false ,false);
                             slidingPiecePseudoLegalMoves.add(move);
                         }
 
@@ -212,7 +213,7 @@ public class PseudoMoves {
                     }
 
                     Move move = new Move(pieceSquare, endSquare, pawnChar,
-                            capturedPiece, isEnPassant, board.getEnPassantTargetSquare(), isDoublePawnMove);
+                            capturedPiece, isEnPassant, board.getEnPassantTargetSquare(), isDoublePawnMove, false ,false);
                     pawnPseudoLegalMoves.add(move);
                 }
             }
@@ -268,7 +269,7 @@ public class PseudoMoves {
                     if (checkEndSquareColour(board.getSquares(), board.getSideToMove(), endSquare)) {
 
                         Move move = new Move(square, endSquare, kingChar,
-                                board.getSquares()[endSquare], false, board.getEnPassantTargetSquare(), false);
+                                board.getSquares()[endSquare], false, board.getEnPassantTargetSquare(), false, false, false);
                         kingPseudoLegalMoves.add(move);
                     }
                 }
@@ -276,6 +277,87 @@ public class PseudoMoves {
         }
 
         return kingPseudoLegalMoves;
+    }
+
+    // TODO: 30/09/2023 need to add pseudo legal move for castling
+    public static List<Move> castlingPseudoLegalMoves(Board board){
+
+        //all castle and king starting squares
+        final int whiteKingSideCastle = 63;
+        final int whiteQueenSideCastle = 56;
+        final int blackKingSideCastle = 7;
+        final int blackQueenSideCastle = 0;
+        final int blackKing = 4;
+        final int whiteKing = 60;
+
+        List<Move> castleMoves = new ArrayList<>();
+
+        // - can't castle if the king is crossing a square that is under attack -- or is in check
+        List<Move> opponentPseudoLegalMoves = opponentPseudoLegalMoves(board);
+
+        //this might be useful to calculate elsewhere but its here for now
+        List<Integer> enemyAttackSquares = opponentPseudoLegalMoves.stream().map(Move::getEndSquare).toList();
+
+        /*
+            -- check castling rights
+            -- can probably hard code the squares since the kings and rooks have to be on their starting squares
+            -- if a king move - all castling rights are removed
+            -- if a rook moves - only that side is removed
+            -- if a rook is taken then remove castling right - or just check that the rook is on its starting square
+
+            -- need to add isCastle flag to the Move object so that you can undo a castle move
+            -- maybe isQueenCastle or isKingCastle instead of above - then can replace pieces depending on the colour
+         */
+
+        if (board.getSideToMove() == 'w'){
+
+            if (enemyAttackSquares.contains(whiteKing)){
+                return castleMoves;
+            }
+
+            if (board.isWhiteKingCastle()){
+                if (!(enemyAttackSquares.contains(whiteKing + 1) || enemyAttackSquares.contains(whiteKing + 2))){
+                    if (board.getSquares()[whiteKing+1] == 0 &&
+                            board.getSquares()[whiteKing + 2] == 0){
+                        //then can castle kingside
+                        Move move = new Move(whiteKing,
+                                whiteKing + 2,
+                                'K',
+                                board.getSquares()[whiteKing+2],
+                                false,
+                                board.getEnPassantTargetSquare(),
+                                false,
+                                true,
+                                false);
+                        castleMoves.add(move);
+                    }
+                }
+
+            }
+            if(board.isWhiteQueenCastle()){
+                if (!(enemyAttackSquares.contains(whiteKing - 1) || enemyAttackSquares.contains(whiteKing - 2))){
+                    //then can castle kingside
+                }
+            }
+        } else {
+
+            if (enemyAttackSquares.contains(blackKing)){
+                return castleMoves;
+            }
+
+            if (board.isBlackKingCastle()){
+                if (!(enemyAttackSquares.contains(blackKing + 1) || enemyAttackSquares.contains(blackKing + 2))){
+                    //then can castle kingside
+                }
+            }
+            if(board.isBlackQueenCastle()){
+                if (!(enemyAttackSquares.contains(blackKing - 1) || enemyAttackSquares.contains(blackKing - 2))){
+                    //then can castle kingside
+                }
+            }
+        }
+
+        return castleMoves;
     }
 
     //kind of a weird way to do this, but it was quite easy to reuse the current pseudo-legal move function
@@ -344,5 +426,5 @@ public class PseudoMoves {
         }
     }
 
-    // TODO: 30/09/2023 need to add pseudo legal move for castling
+
 }

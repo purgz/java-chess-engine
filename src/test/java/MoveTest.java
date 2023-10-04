@@ -59,5 +59,15 @@ public class MoveTest {
 
     }
 
+    @Test
+    public void testCastling(){
+
+        String fen = "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1";
+        Board castleBoard = new Board(fen);
+
+        System.out.println(PseudoMoves.castlingPseudoLegalMoves(castleBoard));
+
+    }
+
 
 }

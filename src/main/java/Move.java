@@ -7,16 +7,35 @@ public class Move {
     private boolean isEnPassant;
     private int enPassantTargetSquare;
     boolean isDoublePawnMove;
+    boolean isKingCastle;
+    boolean isQueenCastle;
 
     public boolean isDoublePawnMove() {
         return isDoublePawnMove;
+    }
+
+    public boolean isKingCastle() {
+        return isKingCastle;
+    }
+
+    public void setKingCastle(boolean kingCastle) {
+        isKingCastle = kingCastle;
+    }
+
+    public boolean isQueenCastle() {
+        return isQueenCastle;
+    }
+
+    public void setQueenCastle(boolean queenCastle) {
+        isQueenCastle = queenCastle;
     }
 
     public void setDoublePawnMove(boolean doublePawnMove) {
         isDoublePawnMove = doublePawnMove;
     }
 
-    public Move(int startSquare, int endSquare, char piece, char capturedPiece, boolean isEnPassant, int enPassantTargetSquare, boolean isDoublePawnMove){
+    public Move(int startSquare, int endSquare, char piece, char capturedPiece, boolean isEnPassant,
+                int enPassantTargetSquare, boolean isDoublePawnMove, boolean isKingCastle, boolean isQueenCastle){
         this.startSquare = startSquare;
         this.endSquare = endSquare;
         this.piece = piece;
@@ -24,6 +43,8 @@ public class Move {
         this.isEnPassant = isEnPassant;
         this.enPassantTargetSquare = enPassantTargetSquare;
         this.isDoublePawnMove = isDoublePawnMove;
+        this.isKingCastle = isKingCastle;
+        this.isQueenCastle = isQueenCastle;
     }
 
     public int getEnPassantTargetSquare() {
@@ -68,6 +89,8 @@ public class Move {
                 ", isEnPassant=" + isEnPassant +
                 ", enPassantTargetSquare=" + enPassantTargetSquare +
                 ", isDoublePawnMove=" + isDoublePawnMove +
+                ", isKingCastle=" + isKingCastle +
+                ", isQueenCastle=" + isQueenCastle +
                 '}';
     }
 
