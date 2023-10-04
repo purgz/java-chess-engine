@@ -73,7 +73,11 @@ public class Move {
                 endSquare == move.getEndSquare() &&
                 piece == move.getPiece() &&
                 capturedPiece == move.getCapturedPiece() &&
-                isEnPassant == move.isEnPassant()){
+                isEnPassant == move.isEnPassant() &&
+                enPassantTargetSquare == move.enPassantTargetSquare &&
+                isDoublePawnMove == move.isDoublePawnMove &&
+                isKingCastle == move.isKingCastle &&
+                isQueenCastle == move.isQueenCastle){
             return true;
         }
         return false;

@@ -1,5 +1,9 @@
 import com.sun.source.tree.AssertTree;
 import org.junit.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class MoveTest {
 
     private static Board startBoard;
@@ -65,8 +69,17 @@ public class MoveTest {
         String fen = "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1";
         Board castleBoard = new Board(fen);
 
-        System.out.println(PseudoMoves.castlingPseudoLegalMoves(castleBoard));
+        Move whiteKingCastle = new Move (60, 62, 'K', (char) 0, false, castleBoard.getEnPassantTargetSquare(), false, true, false);
+        Move whiteQueenCastle = new Move (60, 58, 'K', (char) 0, false, castleBoard.getEnPassantTargetSquare(), false, false, true);
 
+        List<Move> castlingPseudoMoves = PseudoMoves.castlingPseudoLegalMoves(castleBoard);
+        List<Move> expected = new ArrayList<>();
+        expected.add(whiteKingCastle);
+        //expected.add(whiteQueenCastle);
+        System.out.println(castlingPseudoMoves);
+        System.out.println(expected);
+
+        Assert.assertArrayEquals(castlingPseudoMoves.toArray(), expected.toArray());
     }
 
 
