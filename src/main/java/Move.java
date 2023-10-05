@@ -6,9 +6,9 @@ public class Move {
     private char capturedPiece;
     private boolean isEnPassant;
     private int enPassantTargetSquare;
-    boolean isDoublePawnMove;
-    boolean isKingCastle;
-    boolean isQueenCastle;
+    private boolean isDoublePawnMove;
+    private boolean isKingCastle;
+    private boolean isQueenCastle;
 
     public boolean isDoublePawnMove() {
         return isDoublePawnMove;

@@ -17,11 +17,22 @@ public class Main {
 
         System.out.println("************************************");
         startTime = System.nanoTime();
-
+        String fen4 = "r3k2r/8/8/8/8/7B/8/R3K2R b KQkq - 0 1";
         //playGameInConsole();
-        Board board = new Board();
+        Board board = new Board(fen4);
+        board.prettyPrintBoard();
 
         PseudoMoves.castlingPseudoLegalMoves(board);
+
+        Move blackKingCastle = new Move (4, 6, 'k', (char) 0, false, board.getEnPassantTargetSquare(), false, true, false);
+        Move blackQueenCastle = new Move (4, 2, 'k', (char) 0, false, board.getEnPassantTargetSquare(), false, false, true);
+
+        board.doMove(blackQueenCastle);
+        board.prettyPrintBoard();
+        board.undoMove(blackQueenCastle);
+        board.prettyPrintBoard();
+
+
         endTime = System.nanoTime();
         System.out.println("************************************");
 
@@ -29,7 +40,12 @@ public class Main {
 
         System.out.println("EXECUTION TIME " + time);
 
-        // TODO: 01/10/2023 ADD castling
+        // TODO: 04/10/2023 ADD METHODS IN DO MOVE TO DO CASTLING - 1
+        // TODO: 04/10/2023 ADD UNDO CASTLING TO UNDO MOVE - 2
+        // TODO: 04/10/2023 ENSURE THAT CASTLING RIGHTS ARE EDITED - 3
+        // -- when a player moves the relevant rook
+        // -- when a player moves their king
+        // -- if an opponent captures the rook
     }
 
     public static void playGameInConsole(){

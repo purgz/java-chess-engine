@@ -305,6 +305,16 @@ public class Board {
             squares[endSquare] = squares[startSquare];
             squares[startSquare] = 0;
             squares[endSquare + dir * 8] = 0;
+        } else if (move.isQueenCastle()){
+            squares[endSquare] = squares[startSquare];
+            squares[startSquare] = 0;
+            squares[startSquare - 1] = squares[startSquare - 4];
+            squares[startSquare - 4] = 0;
+        } else if (move.isKingCastle()){
+            squares[endSquare] = squares[startSquare];
+            squares[startSquare] = 0;
+            squares[startSquare + 1] = squares[startSquare + 3];
+            squares[startSquare + 3] = 0;
         } else {
             squares[endSquare] = squares[startSquare];
             squares[startSquare] = 0;
@@ -348,6 +358,16 @@ public class Board {
             squares[move.getEndSquare()] = 0;
             squares[move.getEndSquare() - dir * 8] = move.getCapturedPiece();
 
+        } else if (move.isKingCastle()){
+            squares[move.getStartSquare()] = move.getPiece();
+            squares[move.getEndSquare()] = 0;
+            squares[move.getStartSquare() + 3] = squares[move.getStartSquare() + 1];
+            squares[move.getStartSquare() + 1] = 0;
+        } else if (move.isQueenCastle()){
+            squares[move.getStartSquare()] = move.getPiece();
+            squares[move.getEndSquare()] = 0;
+            squares[move.getStartSquare() - 4] = squares[move.getStartSquare() - 1];
+            squares[move.getStartSquare() - 1] = 0;
         } else {
             squares[move.getEndSquare()] = move.getCapturedPiece();
             squares[move.getStartSquare()] = move.getPiece();
