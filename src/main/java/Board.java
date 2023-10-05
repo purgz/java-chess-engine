@@ -17,6 +17,11 @@ public class Board {
     private boolean whiteQueenCastle;
     private boolean blackKingCastle;
     private boolean blackQueenCastle;
+    private String castlingRights;
+
+    public String getCastlingRights() {
+        return castlingRights;
+    }
 
     //need to check fen for en passant target square
     private int enPassantTargetSquare;
@@ -196,7 +201,7 @@ public class Board {
     }
 
     private void setCastlingRights(String castlingRights) {
-
+        this.castlingRights = castlingRights;
         if (castlingRights.equals("-")){
             // '-' means neither side has castling rights
             whiteKingCastle = false;
@@ -334,6 +339,10 @@ public class Board {
         return false;
     }
 
+    public void updateCastlingRights(){
+
+    }
+
 
     public boolean doLegalMove(int[] move){
 
@@ -377,6 +386,8 @@ public class Board {
         if (moveStack.size() != 0){
 
             enPassantTargetSquare = moveStack.peek().getEnPassantTargetSquare();
+            castlingRights = moveStack.peek().getCastlingRights();
+            setCastlingRights(castlingRights);
         } else {
             enPassantTargetSquare = -1;
         }
@@ -396,6 +407,9 @@ public class Board {
         List<Move> legalMoves = new ArrayList<>();
 
         List<Move> allPseudoLegalMoves = PseudoMoves.allPseudoLegalMoves(this);
+
+        //need to add this here to stop stack overflow ...
+        allPseudoLegalMoves.addAll(PseudoMoves.castlingPseudoLegalMoves(this));
 
         //do and undo each move
         for (Move move : allPseudoLegalMoves){

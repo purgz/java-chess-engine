@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PseudoMoves {
@@ -57,7 +58,7 @@ public class PseudoMoves {
                     if (checkEndSquareColour(board.getSquares(), colourToCalculate, endSquare)){
 
                         Move move = new Move(knightSquare, endSquare, knightChar,
-                                board.getSquares()[endSquare],false , board.getEnPassantTargetSquare(), false, false, false);
+                                board.getSquares()[endSquare],false , board.getEnPassantTargetSquare(), false, false, false, board.getCastlingRights());
                         allKnightPseudoLegalMoves.add(move);
                     }
                 }
@@ -137,7 +138,7 @@ public class PseudoMoves {
                         //if the take is valid then add to moves
                         if (checkEndSquareColour(board.getSquares(), colour, endSquare)){
                             Move move = new Move(pieceSquare, endSquare,
-                                    board.getSquares()[pieceSquare],board.getSquares()[endSquare], false, board.getEnPassantTargetSquare(), false, false ,false);
+                                    board.getSquares()[pieceSquare],board.getSquares()[endSquare], false, board.getEnPassantTargetSquare(), false, false ,false, board.getCastlingRights());
                             slidingPiecePseudoLegalMoves.add(move);
                         }
 
@@ -213,7 +214,7 @@ public class PseudoMoves {
                     }
 
                     Move move = new Move(pieceSquare, endSquare, pawnChar,
-                            capturedPiece, isEnPassant, board.getEnPassantTargetSquare(), isDoublePawnMove, false ,false);
+                            capturedPiece, isEnPassant, board.getEnPassantTargetSquare(), isDoublePawnMove, false ,false,board.getCastlingRights());
                     pawnPseudoLegalMoves.add(move);
                 }
             }
@@ -269,12 +270,13 @@ public class PseudoMoves {
                     if (checkEndSquareColour(board.getSquares(), board.getSideToMove(), endSquare)) {
 
                         Move move = new Move(square, endSquare, kingChar,
-                                board.getSquares()[endSquare], false, board.getEnPassantTargetSquare(), false, false, false);
+                                board.getSquares()[endSquare], false, board.getEnPassantTargetSquare(), false, false, false, board.getCastlingRights());
                         kingPseudoLegalMoves.add(move);
                     }
                 }
             }
         }
+
 
         return kingPseudoLegalMoves;
     }
@@ -282,11 +284,6 @@ public class PseudoMoves {
     // TODO: 30/09/2023 need to add pseudo legal move for castling
     public static List<Move> castlingPseudoLegalMoves(Board board){
 
-        //all castle and king starting squares
-        final int whiteKingSideCastle = 63;
-        final int whiteQueenSideCastle = 56;
-        final int blackKingSideCastle = 7;
-        final int blackQueenSideCastle = 0;
         final int blackKing = 4;
         final int whiteKing = 60;
 
@@ -372,7 +369,7 @@ public class PseudoMoves {
                         board.getEnPassantTargetSquare(),
                         false,
                         true,
-                        false);
+                        false, board.getCastlingRights());
                 return move;
             }
             return null;
@@ -388,7 +385,7 @@ public class PseudoMoves {
                         board.getEnPassantTargetSquare(),
                         false,
                         false,
-                        true);
+                        true, board.getCastlingRights());
                 return move;
             }
             return null;

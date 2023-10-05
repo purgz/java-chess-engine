@@ -17,21 +17,28 @@ public class Main {
 
         System.out.println("************************************");
         startTime = System.nanoTime();
-        String fen4 = "r3k2r/8/8/8/8/7B/8/R3K2R b KQkq - 0 1";
-        //playGameInConsole();
-        Board board = new Board(fen4);
-        board.prettyPrintBoard();
+       // String fen4 = "r3k2r/8/8/8/8/7B/8/R3K2R b KQkq - 0 1";
+       // Board board = new Board(fen4);
+        playGameInConsole();
 
+
+
+       // System.out.println(PseudoMoves.castlingPseudoLegalMoves(board));
+
+        //Board board = new Board(fen4);
+        //board.prettyPrintBoard();
+
+        /*
         PseudoMoves.castlingPseudoLegalMoves(board);
 
-        Move blackKingCastle = new Move (4, 6, 'k', (char) 0, false, board.getEnPassantTargetSquare(), false, true, false);
-        Move blackQueenCastle = new Move (4, 2, 'k', (char) 0, false, board.getEnPassantTargetSquare(), false, false, true);
+        Move blackKingCastle = new Move (4, 6, 'k', (char) 0, false, board.getEnPassantTargetSquare(), false, true, false, board.getCastlingRights());
+        Move blackQueenCastle = new Move (4, 2, 'k', (char) 0, false, board.getEnPassantTargetSquare(), false, false, true, board.getCastlingRights());
 
         board.doMove(blackQueenCastle);
         board.prettyPrintBoard();
         board.undoMove(blackQueenCastle);
         board.prettyPrintBoard();
-
+        */
 
         endTime = System.nanoTime();
         System.out.println("************************************");
@@ -49,9 +56,9 @@ public class Main {
     }
 
     public static void playGameInConsole(){
-
+        String fen4 = "r3k2r/8/8/8/8/8/8/R3K2R b KQkq - 0 1";
         Scanner scanner = new Scanner(System.in);
-        Board board = new Board(startingFen);
+        Board board = new Board(fen4);
         while (!board.checkMate()){
             System.out.print("\033[H\033[2J");
             System.out.flush();

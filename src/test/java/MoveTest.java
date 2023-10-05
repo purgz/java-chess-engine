@@ -78,11 +78,11 @@ public class MoveTest {
         Board blackCastleBoard = new Board(fen2);
         Board blackCastleBoard2 = new Board(fen4);
 
-        Move whiteKingCastle = new Move (60, 62, 'K', (char) 0, false, whiteCastleBoard.getEnPassantTargetSquare(), false, true, false);
-        Move whiteQueenCastle = new Move (60, 58, 'K', (char) 0, false, whiteCastleBoard.getEnPassantTargetSquare(), false, false, true);
+        Move whiteKingCastle = new Move (60, 62, 'K', (char) 0, false, whiteCastleBoard.getEnPassantTargetSquare(), false, true, false, whiteCastleBoard.getCastlingRights());
+        Move whiteQueenCastle = new Move (60, 58, 'K', (char) 0, false, whiteCastleBoard.getEnPassantTargetSquare(), false, false, true, whiteCastleBoard.getCastlingRights());
 
-        Move blackKingCastle = new Move (4, 6, 'k', (char) 0, false, blackCastleBoard.getEnPassantTargetSquare(), false, true, false);
-        Move blackQueenCastle = new Move (4, 2, 'k', (char) 0, false, blackCastleBoard.getEnPassantTargetSquare(), false, false, true);
+        Move blackKingCastle = new Move (4, 6, 'k', (char) 0, false, blackCastleBoard.getEnPassantTargetSquare(), false, true, false, blackCastleBoard.getCastlingRights());
+        Move blackQueenCastle = new Move (4, 2, 'k', (char) 0, false, blackCastleBoard.getEnPassantTargetSquare(), false, false, true, blackCastleBoard.getCastlingRights());
 
         List<Move> castlingPseudoMoves = PseudoMoves.castlingPseudoLegalMoves(whiteCastleBoard);
         List<Move> expected = new ArrayList<>();

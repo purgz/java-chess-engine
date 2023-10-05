@@ -9,6 +9,7 @@ public class Move {
     private boolean isDoublePawnMove;
     private boolean isKingCastle;
     private boolean isQueenCastle;
+    private String castlingRights;
 
     public boolean isDoublePawnMove() {
         return isDoublePawnMove;
@@ -35,7 +36,8 @@ public class Move {
     }
 
     public Move(int startSquare, int endSquare, char piece, char capturedPiece, boolean isEnPassant,
-                int enPassantTargetSquare, boolean isDoublePawnMove, boolean isKingCastle, boolean isQueenCastle){
+                int enPassantTargetSquare, boolean isDoublePawnMove, boolean isKingCastle, boolean isQueenCastle,
+                String castlingRights){
         this.startSquare = startSquare;
         this.endSquare = endSquare;
         this.piece = piece;
@@ -45,6 +47,7 @@ public class Move {
         this.isDoublePawnMove = isDoublePawnMove;
         this.isKingCastle = isKingCastle;
         this.isQueenCastle = isQueenCastle;
+        this.castlingRights = castlingRights;
     }
 
     public int getEnPassantTargetSquare() {
@@ -77,10 +80,19 @@ public class Move {
                 enPassantTargetSquare == move.enPassantTargetSquare &&
                 isDoublePawnMove == move.isDoublePawnMove &&
                 isKingCastle == move.isKingCastle &&
-                isQueenCastle == move.isQueenCastle){
+                isQueenCastle == move.isQueenCastle &&
+                castlingRights.equals(move.castlingRights)){
             return true;
         }
         return false;
+    }
+
+    public String getCastlingRights() {
+        return castlingRights;
+    }
+
+    public void setCastlingRights(String castlingRights) {
+        this.castlingRights = castlingRights;
     }
 
     @Override
@@ -95,6 +107,7 @@ public class Move {
                 ", isDoublePawnMove=" + isDoublePawnMove +
                 ", isKingCastle=" + isKingCastle +
                 ", isQueenCastle=" + isQueenCastle +
+                ", castlingRights='" + castlingRights + '\'' +
                 '}';
     }
 
