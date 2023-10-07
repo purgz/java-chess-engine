@@ -18,6 +18,7 @@ public class Board {
     private boolean blackKingCastle;
     private boolean blackQueenCastle;
     private String castlingRights;
+    private String startCastlingRights;
 
     public String getCastlingRights() {
         return castlingRights;
@@ -107,6 +108,8 @@ public class Board {
         sideToMove = fenParts[1].charAt(0);
         setCastlingRights(fenParts[2]);
         setEnpassantTargetSquare(fenParts[3]);
+
+        startCastlingRights = castlingRights;
     }
 
     public String convertBoardToFEN(){
@@ -304,6 +307,18 @@ public class Board {
         int startSquare = move.getStartSquare();
         int endSquare = move.getEndSquare();
 
+        if (move.getPiece() == 'K'){
+            move.setCastlingRights(move.getCastlingRights().replace("KQ", ""));
+        } else if (move.getPiece() == 'k'){
+            move.setCastlingRights(move.getCastlingRights().replace("kq", ""));
+        }
+
+        if (move.getCastlingRights() == ""){
+            move.setCastlingRights("-");
+        }
+
+        setCastlingRights(move.getCastlingRights());
+
         int dir = sideToMove == 'w' ? 1 : -1;
         if (move.isEnPassant()){
 
@@ -390,6 +405,7 @@ public class Board {
             setCastlingRights(castlingRights);
         } else {
             enPassantTargetSquare = -1;
+            setCastlingRights(startCastlingRights);
         }
         //alternate side
         sideToMove = sideToMove == 'w' ? 'b' : 'w';
