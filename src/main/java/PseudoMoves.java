@@ -58,7 +58,7 @@ public class PseudoMoves {
                     if (checkEndSquareColour(board.getSquares(), colourToCalculate, endSquare)){
 
                         Move move = new Move(knightSquare, endSquare, knightChar,
-                                board.getSquares()[endSquare],false , board.getEnPassantTargetSquare(), false, false, false, board.getCastlingRights());
+                                board.getSquares()[endSquare],false , board.getEnPassantTargetSquare(), false, false, false);
                         allKnightPseudoLegalMoves.add(move);
                     }
                 }
@@ -138,7 +138,7 @@ public class PseudoMoves {
                         //if the take is valid then add to moves
                         if (checkEndSquareColour(board.getSquares(), colour, endSquare)){
                             Move move = new Move(pieceSquare, endSquare,
-                                    board.getSquares()[pieceSquare],board.getSquares()[endSquare], false, board.getEnPassantTargetSquare(), false, false ,false, board.getCastlingRights());
+                                    board.getSquares()[pieceSquare],board.getSquares()[endSquare], false, board.getEnPassantTargetSquare(), false, false ,false);
                             slidingPiecePseudoLegalMoves.add(move);
                         }
 
@@ -214,7 +214,7 @@ public class PseudoMoves {
                     }
 
                     Move move = new Move(pieceSquare, endSquare, pawnChar,
-                            capturedPiece, isEnPassant, board.getEnPassantTargetSquare(), isDoublePawnMove, false ,false,board.getCastlingRights());
+                            capturedPiece, isEnPassant, board.getEnPassantTargetSquare(), isDoublePawnMove, false ,false);
                     pawnPseudoLegalMoves.add(move);
                 }
             }
@@ -268,9 +268,8 @@ public class PseudoMoves {
 
                     //if the take is valid then add to moves
                     if (checkEndSquareColour(board.getSquares(), board.getSideToMove(), endSquare)) {
-
                         Move move = new Move(square, endSquare, kingChar,
-                                board.getSquares()[endSquare], false, board.getEnPassantTargetSquare(), false, false, false, board.getCastlingRights());
+                                board.getSquares()[endSquare], false, board.getEnPassantTargetSquare(), false, false, false);
                         kingPseudoLegalMoves.add(move);
                     }
                 }
@@ -369,7 +368,7 @@ public class PseudoMoves {
                         board.getEnPassantTargetSquare(),
                         false,
                         true,
-                        false, board.getCastlingRights());
+                        false);
                 return move;
             }
             return null;
@@ -385,7 +384,7 @@ public class PseudoMoves {
                         board.getEnPassantTargetSquare(),
                         false,
                         false,
-                        true, board.getCastlingRights());
+                        true);
                 return move;
             }
             return null;

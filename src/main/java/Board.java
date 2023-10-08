@@ -17,12 +17,6 @@ public class Board {
     private boolean whiteQueenCastle;
     private boolean blackKingCastle;
     private boolean blackQueenCastle;
-    private String castlingRights;
-    private String startCastlingRights;
-
-    public String getCastlingRights() {
-        return castlingRights;
-    }
 
     //need to check fen for en passant target square
     private int enPassantTargetSquare;
@@ -108,8 +102,6 @@ public class Board {
         sideToMove = fenParts[1].charAt(0);
         setCastlingRights(fenParts[2]);
         setEnpassantTargetSquare(fenParts[3]);
-
-        startCastlingRights = castlingRights;
     }
 
     public String convertBoardToFEN(){
@@ -203,8 +195,8 @@ public class Board {
         }
     }
 
-    private void setCastlingRights(String castlingRights) {
-        this.castlingRights = castlingRights;
+    public void setCastlingRights(String castlingRights) {
+
         if (castlingRights.equals("-")){
             // '-' means neither side has castling rights
             whiteKingCastle = false;
@@ -307,17 +299,6 @@ public class Board {
         int startSquare = move.getStartSquare();
         int endSquare = move.getEndSquare();
 
-        if (move.getPiece() == 'K'){
-            move.setCastlingRights(move.getCastlingRights().replace("KQ", ""));
-        } else if (move.getPiece() == 'k'){
-            move.setCastlingRights(move.getCastlingRights().replace("kq", ""));
-        }
-
-        if (move.getCastlingRights() == ""){
-            move.setCastlingRights("-");
-        }
-
-        setCastlingRights(move.getCastlingRights());
 
         int dir = sideToMove == 'w' ? 1 : -1;
         if (move.isEnPassant()){
@@ -348,14 +329,39 @@ public class Board {
             move.setEnPassantTargetSquare(enPassantTargetSquare);
         }
 
+        boolean[] castlingRights = new boolean[] {whiteKingCastle, whiteQueenCastle, blackKingCastle, blackQueenCastle};
+
+        if (move.getPiece() == 'K'){
+            castlingRights[0] = false;
+            castlingRights[1] = false;
+            move.setCastlingRights(castlingRights);
+        } else if (move.getPiece() == 'k'){
+            castlingRights[2] = false;
+            castlingRights[3] = false;
+        } else if (move.getPiece() == 'R'){
+            if (startSquare == 63){
+                castlingRights[0] = false;
+            } else if (startSquare == 56){
+                castlingRights[1] = false;
+            }
+        } else if (move.getPiece() == 'r'){
+            if (startSquare == 7){
+                castlingRights[2] = false;
+            } else if (startSquare == 0){
+                castlingRights[3] = false;
+            }
+        }
+
+        move.setCastlingRights(castlingRights);
+
+        whiteKingCastle = castlingRights[0];
+        whiteQueenCastle = castlingRights[1];
+        blackKingCastle = castlingRights[2];
+        blackQueenCastle = castlingRights[3];
+
         moveStack.push(move);
-        //alternate side
         sideToMove = sideToMove == 'w' ? 'b' : 'w';
         return false;
-    }
-
-    public void updateCastlingRights(){
-
     }
 
 
@@ -364,10 +370,12 @@ public class Board {
         List<Move> legalMoves = boardLegalMoves();
 
         for (Move legalMove : legalMoves){
+
             if (legalMove.equals(move)){
                 doMove(legalMove);
                 return true;
             }
+
         }
 
         return false;
@@ -401,11 +409,19 @@ public class Board {
         if (moveStack.size() != 0){
 
             enPassantTargetSquare = moveStack.peek().getEnPassantTargetSquare();
-            castlingRights = moveStack.peek().getCastlingRights();
-            setCastlingRights(castlingRights);
+            whiteKingCastle = moveStack.peek().getCastlingRights()[0];
+            whiteQueenCastle = moveStack.peek().getCastlingRights()[1];
+            blackKingCastle = moveStack.peek().getCastlingRights()[2];
+            blackQueenCastle = moveStack.peek().getCastlingRights()[3];
         } else {
+
+            //this is not ideal since if the castling rights or enpassant are set at the beggining this doesnt reverse them accurately
+            //this is fine if the board is starting in the starting postion though.
             enPassantTargetSquare = -1;
-            setCastlingRights(startCastlingRights);
+            whiteKingCastle = true;
+            whiteQueenCastle = true;
+            blackQueenCastle = true;
+            blackKingCastle = true;
         }
         //alternate side
         sideToMove = sideToMove == 'w' ? 'b' : 'w';
@@ -420,12 +436,10 @@ public class Board {
 
     public List<Move> boardLegalMoves(){
 
-        List<Move> legalMoves = new ArrayList<>();
-
         List<Move> allPseudoLegalMoves = PseudoMoves.allPseudoLegalMoves(this);
 
         //need to add this here to stop stack overflow ...
-        allPseudoLegalMoves.addAll(PseudoMoves.castlingPseudoLegalMoves(this));
+        List<Move> legalMoves = new ArrayList<>(PseudoMoves.castlingPseudoLegalMoves(this));
 
         //do and undo each move
         for (Move move : allPseudoLegalMoves){
@@ -439,8 +453,6 @@ public class Board {
             sideToMove = sideToMove == 'w' ? 'b' : 'w';
             //restore position and remove move from stack
             undoMove(move);
-
-
         }
 
         return legalMoves;

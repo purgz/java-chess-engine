@@ -46,24 +46,19 @@ public class Main {
         double time = (double) (endTime - startTime) / 1000000;
 
         System.out.println("EXECUTION TIME " + time);
-
-        // TODO: 04/10/2023 ADD METHODS IN DO MOVE TO DO CASTLING - 1
-        // TODO: 04/10/2023 ADD UNDO CASTLING TO UNDO MOVE - 2
-        // TODO: 04/10/2023 ENSURE THAT CASTLING RIGHTS ARE EDITED - 3
-        // -- when a player moves the relevant rook
-        // -- when a player moves their king
-        // -- if an opponent captures the rook
+        
     }
 
     public static void playGameInConsole(){
-        String fen4 = "r3k2r/8/8/8/8/8/8/R3K2R b KQkq - 0 1";
+        String fen4 = "r3k2r/8/8/8/8/8/8/R3K2R b KQkq f6 0 1";
         Scanner scanner = new Scanner(System.in);
-        Board board = new Board(fen4);
+        Board board = new Board();
         while (!board.checkMate()){
             System.out.print("\033[H\033[2J");
             System.out.flush();
             board.prettyPrintBoard();
             System.out.println(board.convertBoardToFEN());
+            System.out.println(board.moveStack);
             String moveString = scanner.nextLine();
 
             if (moveString.equals("undo")){
@@ -76,8 +71,11 @@ public class Main {
             if (move.length > 0){
                 //valid move
                 board.doLegalMove(move);
+
             }
         }
+
+
         board.prettyPrintBoard();
         System.out.println("CHECKMATE " + board.getSideToMove() + " loses");
     }
