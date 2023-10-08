@@ -46,13 +46,13 @@ public class Main {
         double time = (double) (endTime - startTime) / 1000000;
 
         System.out.println("EXECUTION TIME " + time);
-        
+
     }
 
     public static void playGameInConsole(){
         String fen4 = "r3k2r/8/8/8/8/8/8/R3K2R b KQkq f6 0 1";
         Scanner scanner = new Scanner(System.in);
-        Board board = new Board();
+        Board board = new Board(fen4);
         while (!board.checkMate()){
             System.out.print("\033[H\033[2J");
             System.out.flush();

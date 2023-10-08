@@ -352,6 +352,21 @@ public class Board {
             }
         }
 
+        //should deal with the rooks being captures before a castle move is made
+        if (move.getCapturedPiece() == 'r'){
+            if (move.getEndSquare() == 7) {
+                castlingRights[2] = false;
+            } else if (move.getEndSquare() == 0){
+                castlingRights[3] = false;
+            }
+        } else if (move.getCapturedPiece() == 'R'){
+            if (move.getEndSquare() == 63){
+                castlingRights[0] = false;
+            } else if (move.getEndSquare() == 56){
+                castlingRights[1] = false;
+            }
+        }
+
         move.setCastlingRights(castlingRights);
 
         whiteKingCastle = castlingRights[0];
