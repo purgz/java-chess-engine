@@ -86,6 +86,6 @@ This will remove the last played move from the stack and undo it, updated all th
 Move object has an overridden .equals method so that a int[] move can be compared to a move object. This simplifies the process of making a legal move as a Move object doesnt have to be created for each move request.
 ***See doLegalMove method for clarification.
 
-### Currently logic for all moves except castling is working correctly and updating board correctly.
+### Castling now correctly implemented -- can now play full chess game by running the Main class in terminal.
 ### Board is correctly updated on each move and a stack is used to track the moves
 ### Aim is to implement a minimax chess ai once all the move logic has been completed
