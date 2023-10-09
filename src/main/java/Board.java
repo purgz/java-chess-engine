@@ -21,6 +21,9 @@ public class Board {
     //need to check fen for en passant target square
     private int enPassantTargetSquare;
 
+    private int initialEnPassantSquare;
+    private boolean[] initialCastlingRights;
+
     public Stack<Move> moveStack = new Stack<>();
 
     public String getBoardStartingFen() {
@@ -102,6 +105,8 @@ public class Board {
         sideToMove = fenParts[1].charAt(0);
         setCastlingRights(fenParts[2]);
         setEnpassantTargetSquare(fenParts[3]);
+        this.initialEnPassantSquare = enPassantTargetSquare;
+        this.initialCastlingRights = new boolean[] {whiteKingCastle, whiteQueenCastle, blackKingCastle, blackQueenCastle};
     }
 
     public String convertBoardToFEN(){
@@ -430,13 +435,12 @@ public class Board {
             blackQueenCastle = moveStack.peek().getCastlingRights()[3];
         } else {
 
-            //this is not ideal since if the castling rights or enpassant are set at the beggining this doesnt reverse them accurately
-            //this is fine if the board is starting in the starting postion though.
-            enPassantTargetSquare = -1;
-            whiteKingCastle = true;
-            whiteQueenCastle = true;
-            blackQueenCastle = true;
-            blackKingCastle = true;
+            //going to cache the starting values when the board is initialized
+            enPassantTargetSquare = initialEnPassantSquare;
+            whiteKingCastle = initialCastlingRights[0];
+            whiteQueenCastle = initialCastlingRights[1];
+            blackQueenCastle = initialCastlingRights[2];
+            blackKingCastle = initialCastlingRights[3];
         }
         //alternate side
         sideToMove = sideToMove == 'w' ? 'b' : 'w';
