@@ -1,5 +1,5 @@
-import java.util.Arrays;
-import java.util.List;
+package engine;
+
 import java.util.Scanner;
 
 public class Main {
@@ -18,21 +18,21 @@ public class Main {
         System.out.println("************************************");
         startTime = System.nanoTime();
        // String fen4 = "r3k2r/8/8/8/8/7B/8/R3K2R b KQkq - 0 1";
-       // Board board = new Board(fen4);
+       // engine.Board board = new engine.Board(fen4);
         playGameInConsole();
 
 
 
-       // System.out.println(PseudoMoves.castlingPseudoLegalMoves(board));
+       // System.out.println(engine.PseudoMoves.castlingPseudoLegalMoves(board));
 
-        //Board board = new Board(fen4);
+        //engine.Board board = new engine.Board(fen4);
         //board.prettyPrintBoard();
 
         /*
-        PseudoMoves.castlingPseudoLegalMoves(board);
+        engine.PseudoMoves.castlingPseudoLegalMoves(board);
 
-        Move blackKingCastle = new Move (4, 6, 'k', (char) 0, false, board.getEnPassantTargetSquare(), false, true, false, board.getCastlingRights());
-        Move blackQueenCastle = new Move (4, 2, 'k', (char) 0, false, board.getEnPassantTargetSquare(), false, false, true, board.getCastlingRights());
+        engine.Move blackKingCastle = new engine.Move (4, 6, 'k', (char) 0, false, board.getEnPassantTargetSquare(), false, true, false, board.getCastlingRights());
+        engine.Move blackQueenCastle = new engine.Move (4, 2, 'k', (char) 0, false, board.getEnPassantTargetSquare(), false, false, true, board.getCastlingRights());
 
         board.doMove(blackQueenCastle);
         board.prettyPrintBoard();

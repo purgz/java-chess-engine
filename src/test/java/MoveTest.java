@@ -1,9 +1,11 @@
-import com.sun.source.tree.AssertTree;
+import engine.Board;
+import engine.Move;
+import engine.PseudoMoves;
+import engine.Util;
 import org.junit.*;
 import org.junit.jupiter.api.DisplayName;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MoveTest {
@@ -79,7 +81,7 @@ public class MoveTest {
         Board blackCastleBoard2 = new Board(fen4);
 
         Move whiteKingCastle = new Move (60, 62, 'K', (char) 0, false, whiteCastleBoard.getEnPassantTargetSquare(), false, true, false);
-        Move whiteQueenCastle = new Move (60, 58, 'K', (char) 0, false, whiteCastleBoard.getEnPassantTargetSquare(), false, false, true);
+        Move whiteQueenCastle = new Move(60, 58, 'K', (char) 0, false, whiteCastleBoard.getEnPassantTargetSquare(), false, false, true);
 
         Move blackKingCastle = new Move (4, 6, 'k', (char) 0, false, blackCastleBoard.getEnPassantTargetSquare(), false, true, false);
         Move blackQueenCastle = new Move (4, 2, 'k', (char) 0, false, blackCastleBoard.getEnPassantTargetSquare(), false, false, true);

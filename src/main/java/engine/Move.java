@@ -1,3 +1,5 @@
+package engine;
+
 public class Move {
 
     private int startSquare;
@@ -98,7 +100,7 @@ public class Move {
 
     @Override
     public String toString() {
-        return "Move{" +
+        return "engine.Move{" +
                 "startSquare=" + startSquare +
                 ", endSquare=" + endSquare +
                 ", piece=" + piece +

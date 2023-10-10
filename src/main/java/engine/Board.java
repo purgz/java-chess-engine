@@ -1,3 +1,5 @@
+package engine;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -179,7 +181,7 @@ public class Board {
 
     @Override
     public String toString() {
-        return "Board{" +
+        return "engine.Board{" +
                 "boardStartingFen='" + boardStartingFen + '\'' +
                 ", squares=" + Arrays.toString(squares) +
                 ", sideToMove=" + sideToMove +
