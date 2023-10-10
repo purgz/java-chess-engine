@@ -20,10 +20,10 @@ public class ChessGUI {
     private final JLabel message = new JLabel(
             "Chess Champ is ready to play!");
     private static final String COLS = "ABCDEFGH";
-    public static final int QUEEN = 0, KING = 1,
+    public static final int KING = 0, QUEEN = 1,
             ROOK = 2, KNIGHT = 3, BISHOP = 4, PAWN = 5;
     public static final int[] STARTING_ROW = {
-            ROOK, KNIGHT, BISHOP, KING, QUEEN, BISHOP, KNIGHT, ROOK
+            ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK
     };
     public static final int BLACK = 0, WHITE = 1;
 
@@ -138,9 +138,6 @@ public class ChessGUI {
                             endSquare = Integer.parseInt(b.getName());
                         }
 
-                        System.out.println("START " + startSquare);
-                        System.out.println("END " + endSquare);
-
                         if (startSquare != -1 && endSquare != -1){
                             int[] move = {startSquare, endSquare};
 
@@ -150,16 +147,64 @@ public class ChessGUI {
                                 int col = endSquare % 8;
                                 int row = endSquare / 8;
 
-                                chessBoardSquares[col][row].setIcon(chessBoardSquares[startCol][startRow].getIcon());
-                                chessBoardSquares[startCol][startRow].setIcon(new ImageIcon(
-                                        new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB)));
+                                //chessBoardSquares[col][row].setIcon(chessBoardSquares[startCol][startRow].getIcon());
+                                //chessBoardSquares[startCol][startRow].setIcon(new ImageIcon(
+                                        //new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB)));
 
+                                for (int i = 0; i < board.getSquares().length; i ++){
+                                    int currentCol = i % 8;
+                                    int currentRow = i / 8;
+
+                                    switch (board.getSquares()[i]){
+                                        case 0:
+                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(
+                                                    new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB)));
+                                            break;
+                                        case 'P':
+                                             chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][PAWN]));
+                                             break;
+                                        case 'N':
+                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][KNIGHT]));
+                                            break;
+                                        case 'B':
+                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][BISHOP]));
+                                            break;
+                                        case 'K':
+                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][KING]));
+                                            break;
+                                        case 'Q':
+                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][QUEEN]));
+                                            break;
+                                        case 'R':
+                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][ROOK]));
+                                            break;
+                                        case 'p':
+                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][PAWN]));
+                                            break;
+                                        case 'n':
+                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][KNIGHT]));
+                                            break;
+                                        case 'b':
+                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][BISHOP]));
+                                            break;
+                                        case 'k':
+                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][KING]));
+                                            break;
+                                        case 'q':
+                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][QUEEN]));
+                                            break;
+                                        case 'r':
+                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][ROOK]));
+                                            break;
+                                    }
+                                }
                             }
 
                             startSquare = -1;
                             endSquare = -1;
-                            System.out.println(Arrays.toString(move));
+
                             System.out.println(board.convertBoardToFEN());
+                            board.prettyPrintBoard();
                         }
                     }
                 });
