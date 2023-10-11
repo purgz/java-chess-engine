@@ -1,5 +1,6 @@
 package engine;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -9,36 +10,25 @@ public class Main {
     private static final String enPassantFen = "4k3/8/8/8/3Pp3/8/8/4K3 b KQkq d3 0 1";
     private static final String testFen2 = "k7/8/8/8/8/8/rr6/7K b - - 0 1";
 
+    private static final String fen4 = "r3k2r/8/8/8/8/8/8/R3K2R b KQq f6 0 1";
+
     public static void main(String[] args) {
 
 
         long startTime;
         long endTime;
 
+        Board board = new Board();
+        playGameInConsole(board);
+
+
         System.out.println("************************************");
         startTime = System.nanoTime();
-       // String fen4 = "r3k2r/8/8/8/8/7B/8/R3K2R b KQkq - 0 1";
-       // engine.Board board = new engine.Board(fen4);
-        playGameInConsole();
 
-
-
-       // System.out.println(engine.PseudoMoves.castlingPseudoLegalMoves(board));
-
-        //engine.Board board = new engine.Board(fen4);
-        //board.prettyPrintBoard();
-
-        /*
-        engine.PseudoMoves.castlingPseudoLegalMoves(board);
-
-        engine.Move blackKingCastle = new engine.Move (4, 6, 'k', (char) 0, false, board.getEnPassantTargetSquare(), false, true, false, board.getCastlingRights());
-        engine.Move blackQueenCastle = new engine.Move (4, 2, 'k', (char) 0, false, board.getEnPassantTargetSquare(), false, false, true, board.getCastlingRights());
-
-        board.doMove(blackQueenCastle);
-        board.prettyPrintBoard();
-        board.undoMove(blackQueenCastle);
-        board.prettyPrintBoard();
-        */
+        List<String> game = board.convertGameToFenList();
+        for (String pos : game){
+            System.out.println(pos);
+        }
 
         endTime = System.nanoTime();
         System.out.println("************************************");
@@ -49,10 +39,10 @@ public class Main {
 
     }
 
-    public static void playGameInConsole(){
-        String fen4 = "r3k2r/8/8/8/8/8/8/R3K2R b KQq f6 0 1";
+    public static void playGameInConsole(Board board){
+
         Scanner scanner = new Scanner(System.in);
-        Board board = new Board();
+
         while (!board.checkMate()){
             System.out.print("\033[H\033[2J");
             System.out.flush();

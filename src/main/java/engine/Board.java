@@ -96,6 +96,7 @@ public class Board {
     }
 
     public Board(){
+        this.boardStartingFen = startingFen;
         createGameBoard(startingFen);
     }
 
@@ -492,5 +493,21 @@ public class Board {
         }
 
         return false;
+    }
+
+    //method to convert the game into a series of fen strings for saving later
+    public List<String> convertGameToFenList(){
+        List<String> allPositions = new ArrayList<>();
+
+        Board board = new Board(getBoardStartingFen());
+        allPositions.add(getBoardStartingFen());
+
+        for (int i = 0; i < moveStack.size(); i++){
+            board.doMove(moveStack.get(i));
+
+            allPositions.add(board.convertBoardToFEN());
+        }
+
+        return allPositions;
     }
 }
