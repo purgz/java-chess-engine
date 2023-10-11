@@ -132,80 +132,30 @@ public class ChessGUI {
 
                         JButton target = (JButton) e.getSource();
 
+                        System.out.println(startSquare + " square " + endSquare);
+
                         if (startSquare == -1){
                             startSquare = Integer.parseInt(b.getName());
                         } else {
-                            endSquare = Integer.parseInt(b.getName());
+                            if (Integer.parseInt(b.getName()) != startSquare){
+                                endSquare = Integer.parseInt(b.getName());
+                            }
                         }
 
                         if (startSquare != -1 && endSquare != -1){
                             int[] move = {startSquare, endSquare};
 
                             if (board.doLegalMove(move)){
-                                int startCol = startSquare % 8;
-                                int startRow = startSquare / 8;
-                                int col = endSquare % 8;
-                                int row = endSquare / 8;
-
-                                //chessBoardSquares[col][row].setIcon(chessBoardSquares[startCol][startRow].getIcon());
-                                //chessBoardSquares[startCol][startRow].setIcon(new ImageIcon(
-                                        //new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB)));
-
-                                for (int i = 0; i < board.getSquares().length; i ++){
-                                    int currentCol = i % 8;
-                                    int currentRow = i / 8;
-
-                                    switch (board.getSquares()[i]){
-                                        case 0:
-                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(
-                                                    new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB)));
-                                            break;
-                                        case 'P':
-                                             chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][PAWN]));
-                                             break;
-                                        case 'N':
-                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][KNIGHT]));
-                                            break;
-                                        case 'B':
-                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][BISHOP]));
-                                            break;
-                                        case 'K':
-                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][KING]));
-                                            break;
-                                        case 'Q':
-                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][QUEEN]));
-                                            break;
-                                        case 'R':
-                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][ROOK]));
-                                            break;
-                                        case 'p':
-                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][PAWN]));
-                                            break;
-                                        case 'n':
-                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][KNIGHT]));
-                                            break;
-                                        case 'b':
-                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][BISHOP]));
-                                            break;
-                                        case 'k':
-                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][KING]));
-                                            break;
-                                        case 'q':
-                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][QUEEN]));
-                                            break;
-                                        case 'r':
-                                            chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][ROOK]));
-                                            break;
-                                    }
-                                }
+                                //if the board move is accepted then render the new updated board
+                                renderBoard();
                             }
 
+                            //System.out.println(board.convertBoardToFEN());
+                            //board.prettyPrintBoard();
                             startSquare = -1;
                             endSquare = -1;
-
-                            System.out.println(board.convertBoardToFEN());
-                            board.prettyPrintBoard();
                         }
+
                     }
                 });
             }
@@ -231,6 +181,56 @@ public class ChessGUI {
                     default:
                         chessBoard.add(chessBoardSquares[jj][ii]);
                 }
+            }
+        }
+    }
+
+    private void renderBoard(){
+        for (int i = 0; i < board.getSquares().length; i ++) {
+            int currentCol = i % 8;
+            int currentRow = i / 8;
+
+            switch (board.getSquares()[i]) {
+                case 0:
+                    chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(
+                            new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB)));
+                    break;
+                case 'P':
+                    chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][PAWN]));
+                    break;
+                case 'N':
+                    chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][KNIGHT]));
+                    break;
+                case 'B':
+                    chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][BISHOP]));
+                    break;
+                case 'K':
+                    chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][KING]));
+                    break;
+                case 'Q':
+                    chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][QUEEN]));
+                    break;
+                case 'R':
+                    chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[WHITE][ROOK]));
+                    break;
+                case 'p':
+                    chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][PAWN]));
+                    break;
+                case 'n':
+                    chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][KNIGHT]));
+                    break;
+                case 'b':
+                    chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][BISHOP]));
+                    break;
+                case 'k':
+                    chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][KING]));
+                    break;
+                case 'q':
+                    chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][QUEEN]));
+                    break;
+                case 'r':
+                    chessBoardSquares[currentCol][currentRow].setIcon(new ImageIcon(chessPieceImages[BLACK][ROOK]));
+                    break;
             }
         }
     }
@@ -262,23 +262,7 @@ public class ChessGUI {
         message.setText("Make your move!");
         board = new Board();
         // set up the black pieces
-        for (int ii = 0; ii < STARTING_ROW.length; ii++) {
-            chessBoardSquares[ii][0].setIcon(new ImageIcon(
-                    chessPieceImages[BLACK][STARTING_ROW[ii]]));
-        }
-        for (int ii = 0; ii < STARTING_ROW.length; ii++) {
-            chessBoardSquares[ii][1].setIcon(new ImageIcon(
-                    chessPieceImages[BLACK][PAWN]));
-        }
-        // set up the white pieces
-        for (int ii = 0; ii < STARTING_ROW.length; ii++) {
-            chessBoardSquares[ii][6].setIcon(new ImageIcon(
-                    chessPieceImages[WHITE][PAWN]));
-        }
-        for (int ii = 0; ii < STARTING_ROW.length; ii++) {
-            chessBoardSquares[ii][7].setIcon(new ImageIcon(
-                    chessPieceImages[WHITE][STARTING_ROW[ii]]));
-        }
+        renderBoard();
     }
 
     public static void main(String[] args) {
