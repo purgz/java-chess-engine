@@ -395,6 +395,13 @@ public class Board {
 
             if (legalMove.equals(move)){
                 doMove(legalMove);
+
+                if (legalMove.getPiece() == 'P' && legalMove.getEndSquare() < 8 && legalMove.getEndSquare() > -1){
+                    squares[legalMove.getEndSquare()] = 'Q';
+                } else if (legalMove.getPiece() == 'p' && legalMove.getEndSquare() < 64 && legalMove.getEndSquare() > 55){
+                    squares[legalMove.getEndSquare()] = 'q';
+                }
+
                 return true;
             }
 
