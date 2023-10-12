@@ -89,3 +89,14 @@ engine.Move object has an overridden .equals method so that a int[] move can be 
 ### Castling now correctly implemented -- can now play full chess game by running the engine.Main class in terminal.
 ### engine.Board is correctly updated on each move and a stack is used to track the moves
 ### Aim is to implement a minimax chess ai once all the move logic has been completed
+
+---
+
+Now deployed to maven central repository. To include add below to pom.xml:
+```
+    <dependency>
+        <groupId>io.github.purgz</groupId>
+        <artifactId>java-chess-engine</artifactId>
+        <version>1</version>
+    </dependency>
+```
