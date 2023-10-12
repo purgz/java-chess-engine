@@ -100,3 +100,4 @@ Now deployed to maven central repository. To include add below to pom.xml:
         <version>1</version>
     </dependency>
 ```
+Can also find on maven central repository under group io.github.purgz
