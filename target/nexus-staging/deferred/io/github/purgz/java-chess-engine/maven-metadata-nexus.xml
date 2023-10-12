@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>io.github.purgz</groupId>
+  <artifactId>java-chess-engine</artifactId>
+  <versioning>
+    <versions>
+      <version>1.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20231012162937</lastUpdated>
+  </versioning>
+</metadata>
