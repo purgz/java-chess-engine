@@ -477,7 +477,8 @@ public class Board {
 
             sideToMove = sideToMove == 'w' ? 'b' : 'w';
             if (!isCurrentPlayerInCheck()){
-                legalMoves.add(move);
+                if (!legalMoves.contains(move))
+                    legalMoves.add(move);
             }
             sideToMove = sideToMove == 'w' ? 'b' : 'w';
             //restore position and remove move from stack

@@ -12,23 +12,71 @@ public class Main {
 
     private static final String fen4 = "r3k2r/8/8/8/8/8/8/R3K2R b KQq f6 0 1";
 
+    public static int perfNodes(int depth, Board board){
+
+        int nodes = 0;
+
+        if (depth == 0){
+            return 1;
+        }
+        List<Move> moves = board.boardLegalMoves();
+
+        for (int i = 0; i < moves.size(); i++){
+
+            board.doMove(moves.get(i));
+            nodes += perfNodes(depth - 1, board);
+            board.undoMove(moves.get(i));
+        }
+        return nodes;
+    }
+
     public static void main(String[] args) {
 
 
         long startTime;
         long endTime;
 
-        Board board = new Board();
-        playGameInConsole(board);
+        /*
+          4k3/8/8/8/8/8/8/R3K2R w KQ - 0 1 ;D1 26 ;D2 112 ;D3 3189 ;D4 17945 ;D5 532933 ;D6 2788982   yes !
+
+          r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1
+
+
+
+        */
+
+
+        Board board = new Board(
+
+
+        );
+
+
+        System.out.println(board.boardLegalMoves().toArray().length);
+
+        for (Move move : board.boardLegalMoves()){
+
+            System.out.println(Util.convertBoardIndexToSquare(move.getStartSquare()) + " "  +
+                    Util.convertBoardIndexToSquare(move.getEndSquare()) + " " + move.getPiece());
+        }
+
+
+      //  playGameInConsole(board);
 
 
         System.out.println("************************************");
         startTime = System.nanoTime();
 
+        /*
         List<String> game = board.convertGameToFenList();
         for (String pos : game){
             System.out.println(pos);
         }
+         */
+
+        System.out.println("PERF test");
+        System.out.println(perfNodes(5, board));
+
 
         endTime = System.nanoTime();
         System.out.println("************************************");

@@ -183,13 +183,15 @@ public class PseudoMoves {
                 //removes this from the generate move function as the squares for the starting pawn rank is hard to
                 //calculate
 
-                if (pieceSquare < 56 && pieceSquare > 47 && (board.getSquares()[pieceSquare - 16] == 0)){
+                if (pieceSquare < 56 && pieceSquare > 47 && (board.getSquares()[pieceSquare - 16] == 0
+                  && board.getSquares()[pieceSquare - 8] == 0)){
                     pieceMoveOptions.add(-16);
                 }
                 generatePawnMoves(board, pieceSquare, pieceMoveOptions, dir);
             } else {
 
-                if (pieceSquare < 16 && pieceSquare > 7 && (board.getSquares()[pieceSquare + 16] == 0)){
+                if (pieceSquare < 16 && pieceSquare > 7 && (board.getSquares()[pieceSquare + 16] == 0)
+                  && board.getSquares()[pieceSquare + 8] == 0){
                     pieceMoveOptions.add(16);
                 }
                 generatePawnMoves(board, pieceSquare, pieceMoveOptions, dir);
@@ -225,7 +227,7 @@ public class PseudoMoves {
 
     //refactored to use the same code for black and white just by changing dir variable
     private static void generatePawnMoves(Board board, int pieceSquare, List<Integer> pieceMoveOptions, int dir){
-        if (board.getSquares()[pieceSquare + dir * 8] == 0){
+        if (pieceSquare + dir * 8 < 64 && pieceSquare + dir * 8 > -1 && board.getSquares()[pieceSquare + dir * 8] == 0){
             pieceMoveOptions.add(dir * 8);
         }
 
@@ -240,6 +242,10 @@ public class PseudoMoves {
     }
 
     public static boolean checkPawnDiagonal(Board board, int pieceSquare, int moveOption){
+
+        if (pieceSquare + moveOption > 63 || pieceSquare + moveOption < 0){
+            return false;
+        }
 
         //pretty easy way to check en-passant but the en-passant target square has to be updated on every move
         if (pieceSquare + moveOption == board.getEnPassantTargetSquare()){
@@ -312,7 +318,7 @@ public class PseudoMoves {
                 //pass king piece
                 if (!(enemyAttackSquares.contains(whiteKing + 1) || enemyAttackSquares.contains(whiteKing + 2))){
                     Move move = createCastleMove(whiteKing, board, true);
-                    if (move != null){
+                    if (move != null && !castleMoves.contains(move)){
                         castleMoves.add(move);
                     }
                 }
@@ -321,7 +327,7 @@ public class PseudoMoves {
             if(board.isWhiteQueenCastle()){
                 if (!(enemyAttackSquares.contains(whiteKing - 1) || enemyAttackSquares.contains(whiteKing - 2))){
                     Move move = createCastleMove(whiteKing, board, false);
-                    if (move != null){
+                    if (move != null && !castleMoves.contains(move)){
                         castleMoves.add(move);
                     }
                 }
@@ -335,7 +341,7 @@ public class PseudoMoves {
             if (board.isBlackKingCastle()){
                 if (!(enemyAttackSquares.contains(blackKing + 1) || enemyAttackSquares.contains(blackKing + 2))){
                     Move move = createCastleMove(blackKing, board, true);
-                    if (move != null){
+                    if (move != null && !castleMoves.contains(move)){
                         castleMoves.add(move);
                     }
                 }
@@ -343,7 +349,7 @@ public class PseudoMoves {
             if(board.isBlackQueenCastle()){
                 if (!(enemyAttackSquares.contains(blackKing - 1) || enemyAttackSquares.contains(blackKing - 2))){
                     Move move = createCastleMove(blackKing, board, false);
-                    if (move != null){
+                    if (move != null && !castleMoves.contains(move)){
                         castleMoves.add(move);
                     }
                 }
